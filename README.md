@@ -57,7 +57,7 @@ Codegen and Trace Viewer are included with Playwright. Developer Tools is includ
 | Guided in-class duration | Approximately 2.5 hours |
 | Required knowledge | Python, basic terminal use and the earlier Git practical |
 | Test website | [Playwright TodoMVC demonstration](https://demo.playwright.dev/todomvc/) |
-| Practical outcome | Test scripts, execution records, browser comparisons, selected evidence, reflections and Git history |
+| Practical outcome | Test scripts, execution records, selected evidence, reflections and Git history |
 | Focus | Exploring automated testing tools, not developing an application |
 
 ## Contents
@@ -1953,61 +1953,314 @@ Ask your Tutor how to integrate safely. Do not reset or force-push to bypass the
 
 ## 15. Optional extension activities — outside the in-class practical
 
-These activities are not required for the guided 2.5-hour session. Attempt them independently if you have the interest, time and bandwidth. Continue using Git.
+The activities in this section are not required for the guided 2.5-hour practical.
 
-### A. Complete remaining browser comparisons
+Students are encouraged to attempt them independently, outside class, if they have the interest, time and bandwidth. These activities provide additional practice in automated testing: choosing scenarios, writing assertions, reusing code, varying data and investigating failures.
 
-If all five options are available, run the same guided cases in each:
+Use one available browser for these activities. Continue recording your progress using Git.
+
+Choose one or more activities after completing the required practical.
+
+### A. Automate a complete task journey
+
+Create a test that follows a task through several stages:
 
 ```text
-Chromium: 5
-Firefox: 5
-WebKit: 5
-Chrome: 5
-Edge: 5
-
-Total: 25 executions
+Create a task → Edit its name → Mark it complete → Delete it
 ```
 
-These are five functional cases in five configurations, not 25 different functional scenarios. Standalone examples are separate executions.
+Before writing code:
 
-### B. Complete both standalone examples
+1. Perform the journey manually.
+2. Identify the starting state.
+3. Write the expected result after each stage.
+4. Decide which assertions will verify those results.
 
-If your allocated work included only one browser, try the other example. Explain the difference between `channel="chrome"` and `channel="msedge"`.
+Your automated test should check:
 
-### C. Compare failure evidence across browsers
+- The task appears after creation.
+- The updated name appears after editing.
+- The checkbox is checked after completion.
+- The task is absent after deletion.
 
-Repeat the deliberate incorrect expectation in another browser. Use distinct report and artifact paths. Restore the correct expectation before committing final tests.
+Do not rely only on the final empty list. Verify intermediate results so that a failure identifies which stage did not behave as expected.
 
-### D. Explore video evidence
+Use Codegen to help identify unfamiliar controls, but inspect and improve the generated code.
+
+Suggested test name:
+
+```python
+def test_task_can_be_created_edited_completed_and_deleted(page: Page):
+    ...
+```
+
+Replace `...` with your implementation. It is a planning placeholder, not a completed test.
+
+#### Record your observations
+
+- Which stage was most difficult to automate?
+- Which assertions helped identify the stage reached?
+- What could the test miss if it checked only the final result?
+
+#### Git checkpoint
+
+Suggested message:
+
+```text
+Add automated task lifecycle test
+```
+
+### B. Expand data-driven testing
+
+Extend your tests to check different valid task names.
+
+Possible data:
+
+```python
+task_names = [
+    "Read testing notes",
+    "Prepare checklist 123",
+    "Review: add, edit and delete",
+    "A",
+]
+```
+
+Use `@pytest.mark.parametrize` to run the same test with each value. pytest creates a separate test case for each supplied parameter set.
+
+For each name:
+
+1. Start with an empty task list.
+2. Enter the value.
+3. Submit it.
+4. Check that exactly one task exists.
+5. Check that the displayed text matches the expected result.
+6. Check that the input is cleared.
+
+You may also investigate leading and trailing spaces. State the expected behaviour separately rather than assuming displayed text always matches the original input exactly.
+
+#### Record your observations
+
+- Which variations were useful?
+- Did any case require a different expected result?
+- How much repeated code did parametrization remove?
+
+#### Git checkpoint
+
+Suggested message:
+
+```text
+Expand data-driven task creation tests
+```
+
+### C. Create a reusable helper
+
+Identify repeated actions, such as:
+
+```text
+Find input → Enter task name → Press Enter
+```
+
+Create a helper in your own test file:
+
+```python
+def add_task(page: Page, task_name: str):
+    task_input = page.get_by_placeholder(
+        "What needs to be done?",
+        exact=True,
+    )
+
+    task_input.fill(task_name)
+    task_input.press("Enter")
+```
+
+Use it in a test:
+
+```python
+def test_add_two_tasks(page: Page):
+    page.goto(URL)
+
+    task_items = page.locator(".todo-list li")
+
+    expect(task_items).to_have_count(0)
+
+    add_task(page, "Read the instructions")
+    add_task(page, "Prepare the test cases")
+
+    expect(task_items).to_have_count(2)
+
+    expect(task_items.locator("label")).to_have_text(
+        [
+            "Read the instructions",
+            "Prepare the test cases",
+        ]
+    )
+```
+
+Keep your existing imports and `URL` definition.
+
+The helper performs repeated actions. The test still contains assertions explaining what it verifies.
+
+After the change:
+
+1. Run your complete file.
+2. Confirm that earlier tests still behave as expected.
+3. Inspect changes before committing.
+
+#### Record your observations
+
+- What repetition did the helper remove?
+- Does the test remain easy to understand?
+- Which checks should remain visible in the test?
+
+#### Git checkpoint
+
+Suggested message:
+
+```text
+Refactor repeated task entry into a helper
+```
+
+### D. Strengthen a weak automated test
+
+Create a temporary example of a weak test:
+
+```python
+def test_add_task_weak(page: Page):
+    page.goto(URL)
+
+    task_input = page.get_by_placeholder(
+        "What needs to be done?",
+        exact=True,
+    )
+
+    task_input.fill("Prepare testing notes")
+    task_input.press("Enter")
+```
+
+This performs actions but does not explicitly verify the resulting task.
+
+Improve it by adding assertions for:
+
+- The starting state.
+- The number of tasks after submission.
+- The task text.
+- The cleared input.
+
+Then investigate whether the improved test detects a deliberately incorrect expected value. Restore the correct expectation afterwards.
+
+Use Playwright's retrying web assertions rather than arbitrary pauses to wait for expected page conditions.
+
+#### Record your observations
+
+- What did the original test actually verify?
+- What confidence did each assertion add?
+- Which deliberate mistake did the improved test detect?
+
+#### Git checkpoint
+
+Suggested message:
+
+```text
+Strengthen task creation assertions
+```
+
+### E. Automate filter behaviour
+
+Create a test that prepares a small, known set:
+
+```text
+Task A — active
+Task B — completed
+Task C — active
+```
+
+Automate checks for:
+
+1. All showing all three tasks.
+2. Active showing only Tasks A and C.
+3. Completed showing only Task B.
+4. Returning to All without losing any tasks.
+
+Check both the displayed count and task text. A count alone cannot identify whether the correct tasks were displayed.
+
+Keep required setup inside the test. Do not depend on another test having created or completed tasks.
+
+#### Record your observations
+
+- Why is text checking stronger than count checking alone?
+- What setup made the expected results predictable?
+- Did changing filters affect the underlying tasks?
+
+#### Git checkpoint
+
+Suggested message:
+
+```text
+Add automated task filter checks
+```
+
+### F. Build a small regression test collection
+
+Choose useful tests that you would rerun after an application change.
+
+Possible coverage:
+
+- Adding a valid task.
+- Rejecting an empty task.
+- Editing a task.
+- Completing a task.
+- Deleting a task.
+- Filtering active and completed tasks.
+
+For each test, record:
+
+- The behaviour it protects.
+- Why it is worth repeating.
+- Its required starting state.
+- Its main assertion.
+
+Run your own file:
 
 ```bash
-python -m pytest tests/test_member_1.py -k test_add_task --browser firefox --video on
+python -m pytest tests/test_member_1.py --browser chromium --html=reports/member-1-regression.html --self-contained-html
 ```
 
-Compare video with a trace. Keep generated videos local unless your Tutor requests evidence.
+Use your actual member number and one available browser.
 
-### E. Extend your investigation
+Inspect the report and record the outcome. Do not run large repeated loops against the public website.
 
-1. Choose an unanswered question.
-2. Explain why it matters.
-3. Design a follow-up case.
-4. Execute it in one or more available browsers.
-5. Record what changed in your understanding.
+#### Git checkpoint
 
-### F. Improve the handover
+Suggested message:
 
-Check whether another student can locate the test source, starting state, inputs, expected and actual results, browser selection, evidence and uncertainties without a verbal explanation.
+```text
+Organise and execute a small regression test collection
+```
 
-Keep records factual. Do not change outcomes merely to make documentation look complete.
+### Optional activity completion
+
+For each activity attempted:
+
+- [ ] I recorded the testing objective.
+- [ ] I defined expected behaviour before execution.
+- [ ] I added meaningful assertions.
+- [ ] My tests establish their own required state.
+- [ ] I executed tests and recorded actual outcomes.
+- [ ] I investigated unexpected results rather than hiding them.
+- [ ] I restored deliberately incorrect expectations.
+- [ ] I committed and pushed my work.
+- [ ] I recorded what I learned and what I would improve next.
 
 ***
 
 ## Closing reminder
 
-The aim is not to memorise commands or simply make browsers move automatically. Develop the habit of understanding the task, selecting meaningful checks, identifying the browser used, inspecting results and preserving evidence.
+The aim is not to produce the largest number of scripts or obtain passing results at any cost.
+
+Develop the habit of selecting meaningful scenarios, writing clear assertions, keeping tests repeatable, investigating failures and preserving evidence.
 
 ```text
-Explore → Record → Replay → Add checks → Vary data
-        → Compare browsers → Investigate → Commit → Share → Reflect
+Choose a scenario → Define the expectation → Automate
+                  → Execute → Investigate → Improve
+                  → Commit → Share → Reflect
 ```
