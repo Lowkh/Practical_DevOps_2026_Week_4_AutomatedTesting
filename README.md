@@ -11,14 +11,14 @@ Learn automated testing by opening practice websites, automating browser actions
 
 No previous automated testing experience is needed. You have already completed a basic Python module. This practical builds on that knowledge. Complete Python examples and explanations are provided. You do not need to build a website, learn JavaScript or create an application server.
 
-Work in a group of 3–5. Each member uses their own computer and GitHub account, creates a separate test file and runs their own tests. Each member also keeps their own screenshots and a short record of their student-created tests, including any AI help used. Work together when solving problems, but do not divide the guided tests among members. The coordinator prepares only the shared repository and starting files.
+Work in a group of 3–5. Each member uses their own computer and GitHub account, creates a separate test file and runs their own tests. Work together when solving problems, but do not divide the guided tests among members. The coordinator prepares only the shared repository and starting files.
 
 ### Practical overview
 
 | Item | Details |
 | --- | --- |
 | Main lesson | Two hours: 120 minutes. |
-| Before the lesson | Complete Section 1: software and account preparation. |
+| Before you start | Use the checklist in Section 1 to confirm your existing software, accounts and access. |
 | Operating system | Windows. |
 | Python knowledge | Basic Python, from the module completed earlier. |
 | Main browser | Installed stable Google Chrome or Microsoft Edge. |
@@ -28,7 +28,6 @@ Work in a group of 3–5. Each member uses their own computer and GitHub account
 | Login website | [The Internet login demonstration](https://the-internet.herokuapp.com/login) |
 | Personal source file | `tests/test_member_1.py`, using your own member number. |
 | Guided cases per member | Eight, followed by an attempt at one or two tests of your own in Section 12.4. |
-| Personal record | Your own screenshot, short write-up and AI-use disclosure for each test you attempt in Section 12.4. |
 | After the lesson | Optional activities in Section 16. |
 
 ### Tools used
@@ -62,9 +61,22 @@ Work in a group of 3–5. Each member uses their own computer and GitHub account
 >
 > You do not need to download Playwright Chromium for the main lesson.
 
+
+### How this practical connects to the lesson slides
+
+Use the three slide decks with this guide. The slides introduce the ideas; this practical applies a selected set of them with browser tests.
+
+| Lesson material | Ideas used here | Where you will use them |
+| --- | --- | --- |
+| `OAL-03-1-Why-Do-We-Test.pptx` | Why testing matters; levels of testing; positive and negative cases; input groups; boundary values; test parameters. | Sections 3, 7, 9, 10 and 12.4. Boundary practice is extended in Section 16.8. |
+| `OAL-03-2-Manual-vs-Automated.pptx` | Manual exploration, repeatable automated checks, regression testing, reusable code, data-driven tests and maintenance. | Sections 7–14 and the optional post-lesson activities. |
+| `03-3-Testing-Tools.pptx` | Match tools to goals; distinguish built-in and external tools; black-box testing; browser diagnostics; useful reports. | Sections 3, 6, 7 and 13. Section 16.9 gives an optional built-in Python example. |
+
+The main activities focus on web-interface functional checks. They do not try to cover every testing type or tool in the slides.
+
 ## Contents
 
-1. [Before the lesson: prepare your software](#1-before-the-lesson-prepare-your-software)
+1. [Before you start: check what you have](#1-before-you-start-check-what-you-have)
 2. [The two-hour lesson plan](#2-the-two-hour-lesson-plan)
 3. [Understand the workflow](#3-understand-the-workflow)
 4. [Create and clone the group repository](#4-create-and-clone-the-group-repository)
@@ -85,76 +97,114 @@ Work in a group of 3–5. Each member uses their own computer and GitHub account
 
 ***
 
-## 1. Before the lesson: prepare your software
+## 1. Before you start: check what you have
 
-Complete these steps before starting the two-hour lesson. Installation, downloads and account setup are not included in the lesson timing.
+You should already have the software and accounts used in this practical. Use this checklist to confirm that you are ready.
 
-### 1.1 Check Python and VS Code
+### 1.1 Computer and software
 
-Use Python 3.12 or 3.13 for this guide. Do not reinstall suitable existing software.
+- [ ] I am using a Windows computer.
+- [ ] I have Python 3.12 or 3.13.
+- [ ] I have Visual Studio Code.
+- [ ] I have the Python extension published by Microsoft in VS Code.
+- [ ] I have Git.
+- [ ] I have stable Google Chrome or Microsoft Edge.
+- [ ] I have a folder of my choice where I can save the project.
 
-1. Install Python from [Python Downloads](https://www.python.org/downloads/) if needed.
-2. Select `Add Python to PATH` if offered.
-3. Install [VS Code](https://code.visualstudio.com/) if needed.
-4. In VS Code, open Extensions, search for `Python` and install the extension published by Microsoft.
-5. Reopen VS Code after installing software.
+You do not need both Chrome and Edge. Choose either one for the main activities.
 
-The extension does not install Python itself.
+### 1.2 Terminal and version checks
 
-### 1.2 Open Command Prompt in VS Code
+Use Command Prompt inside VS Code throughout this practical.
+
+To open it:
 
 1. Select Terminal → New Terminal.
 2. Open the dropdown beside the terminal's `+` button.
-3. Select Command Prompt. If needed, use Select Default Profile → Command Prompt, then open a new terminal.
+3. Select Command Prompt.
 
-Use Command Prompt throughout this guide. If you see Python's `>>>` prompt, enter `exit()` first.
+Run these commands one at a time:
 
 ```bat
 python --version
 ```
 
-If unavailable:
+```bat
+git --version
+```
+
+You should see a version number for each tool. If the Python command does not work, try:
 
 ```bat
 py -3 --version
 ```
 
-You should see a Python version.
+- [ ] Command Prompt is open in VS Code.
+- [ ] Python displays a version number.
+- [ ] Git displays a version number.
 
-### 1.3 Check Chrome or Edge and the websites
+> [!TIP]
+> If the terminal shows Python's `>>>` prompt, enter `exit()` and press Enter before running terminal commands.
 
-Open installed stable Chrome or Edge from Start. Confirm that both demonstration websites load:
+### 1.3 Browser and website access
 
-- [Task list](https://demo.playwright.dev/todomvc/)
-- [Login page](https://the-internet.herokuapp.com/login)
+Open your chosen browser and check that both practice websites load:
 
-You do not need both browsers or a signed-in personal profile. If needed, use an approved installer for [Chrome](https://www.google.com/chrome/) or [Edge](https://www.microsoft.com/edge/download).
+- [ ] [Playwright TodoMVC task list](https://demo.playwright.dev/todomvc/)
+- [ ] [The Internet login demonstration](https://the-internet.herokuapp.com/login)
 
-### 1.4 Check Git and GitHub
+You do not need to sign in to a personal browser profile or create an account on either practice website.
+
+### 1.4 GitHub and commit identity
+
+- [ ] I have my own GitHub account.
+- [ ] I can sign in to GitHub.
+- [ ] I know my GitHub username.
+
+Check the name and email Git will use for your commits:
 
 ```bat
-git --version
+git config --global user.name
 ```
 
-If missing, install Git for Windows from [Git Downloads](https://git-scm.com/downloads), then reopen VS Code.
+```bat
+git config --global user.email
+```
 
-Replace the example values:
+- [ ] Git displays my intended commit name.
+- [ ] Git displays my intended commit email.
+
+If either value is missing or incorrect, replace the example values below with your own details:
 
 ```bat
 git config --global user.name "Your Name"
 git config --global user.email "YOUR_GITHUB_COMMIT_EMAIL"
 ```
 
-Use an email linked to GitHub or your GitHub no-reply email. These settings identify commits; they do not sign you in.
-
-Sign in to GitHub in your browser. Follow browser sign-in instructions when Git later asks you to authenticate. Never put passwords or tokens in project files.
-
-### 1.5 Agree the group details
-
-Agree who coordinates initial setup, your repository name, member numbers starting at 1 and GitHub usernames.
+Use an email linked to GitHub or your GitHub no-reply email.
 
 > [!NOTE]
-> Use approved installation methods on managed computers. Ask IT support when administrator access is needed. Do not bypass restrictions. If one browser is unavailable, use the other approved browser.
+> Your commit name and email identify your changes. They do not sign you in to GitHub.
+>
+> Never put passwords or access tokens in project files.
+
+### 1.5 Group details
+
+Confirm these details with your group:
+
+- [ ] We know who will coordinate the initial repository setup.
+- [ ] We have agreed on a repository name.
+- [ ] Each member has a member number, starting at 1.
+- [ ] We have shared our GitHub usernames with the coordinator.
+- [ ] Each member knows which personal test filename and branch to use.
+
+Each member will create and run their own tests. The coordinator creates only the shared repository and starting files.
+
+### If something is missing
+
+Check the relevant troubleshooting instructions in Section 17. If software access requires administrator permission, use the approved IT support process. Do not bypass computer or browser restrictions.
+
+The project-specific Python environment and testing packages will be set up together in Section 6.
 
 ***
 
@@ -169,13 +219,13 @@ Agree who coordinates initial setup, your repository name, member numbers starti
 | 40–50 minutes | Test three blank inputs. | 9 |
 | 50–65 minutes | Test correct and incorrect login details. | 10 |
 | 65–75 minutes | Record actions, add a check and replay. | 11 |
-| 75–80 minutes | Use a helper to add two tasks. | 12.1–12.3 |
-| 80–95 minutes | Attempt one or two tests of your own. | 12.4 |
-| 95–110 minutes | Generate results, save individual screenshots and write a short record with AI disclosure. | 13 |
-| 110–120 minutes | Combine source and personal records; update local main. | 14 |
+| 75–85 minutes | Use a helper to add two tasks. | 12.1–12.3 |
+| 85–100 minutes | Attempt one or two tests of your own. | 12.4 |
+| 100–110 minutes | Generate a report and inspect screenshots. | 13 |
+| 110–120 minutes | Combine group source files and update local main. | 14 |
 | Total | 120 minutes | |
 
-The timing assumes software and accounts are ready and the network is working. If setup or troubleshooting takes longer, save your progress and continue unfinished main activities afterwards. Do not hide errors or remove checks to keep to the timing.
+The timing assumes the software, accounts and website access in Section 1 are already available. Read the short concept links alongside their activities; the longer boundary and built-in-tool examples stay in optional post-lesson work. If a check reveals a problem, use Section 17 and preserve your progress. Continue unfinished main activities afterwards if necessary. Do not hide errors or remove checks to keep to the timing.
 
 Use Section 15 as a syntax reference, Section 17 when an error appears and Section 18 for common commands. Section 16 provides further practice after the lesson.
 
@@ -225,6 +275,64 @@ expect(task_labels).to_have_text(["Read testing notes"])
 These snippets explain the idea. Complete examples follow later. A script that only clicks and types may finish without checking the intended result.
 
 A negative test can pass. The incorrect-password test passes when the website rejects the password as expected.
+
+
+### Why these checks are useful
+
+Checking behaviour helps you find problems before users depend on it. A failed check is a signal to investigate; it may come from the application, the test code, the environment or an unavailable website.
+
+Start with a clear expected result. A passing test means its particular assertions succeeded in that run. It cannot prove that all defects have been eliminated.
+
+### Where these tests fit
+
+The slide decks separate testing levels from testing approaches. Keep these ideas distinct:
+
+| Idea | Meaning in this practical |
+| --- | --- |
+| Level: system-level functional checking | You use the running website through its external browser interface, not an isolated application function. |
+| Approach: black-box testing | You choose inputs and check visible results without reading the website's internal source code. |
+| Interface: web GUI | You interact with fields, buttons, links and task rows. |
+| Execution: automated | Playwright performs the predefined steps after you start pytest. |
+
+These are small browser user-flow tests near the top of the testing pyramid. They do not replace unit or integration tests. Using pytest does not automatically make a test a unit test; what the test exercises determines its level.
+
+The `add_task()` helper is reusable test code. Calling it does not test an isolated function inside the demonstration application.
+
+### What remains outside this practical
+
+- Unit and component testing of the demonstration applications' internal code.
+- Direct API and integration checks between services.
+- Formal user acceptance or release sign-off.
+- Performance, load and security testing.
+- Code coverage measurement.
+- Automatically triggered CI/CD pipelines.
+
+The login cases check visible login behaviour. They do not establish that the login system is secure. A short test duration is not a performance benchmark.
+
+### Built-in tools and additional tools work together
+
+| Tool or resource | Where it comes from | Role here |
+| --- | --- | --- |
+| Browser Developer Tools | Included with Chrome or Edge. | Inspect the page and investigate browser messages or requests. |
+| Python `unittest` | Included with Python's standard library. | Optional local example in Section 16.9. |
+| Playwright and its Codegen/Trace Viewer tools | Additional package/tooling installed for the project. | Browser automation and investigation. |
+| pytest and pytest-html | Additional Python packages. | Test execution and HTML reporting. |
+| Git and GitHub | Separate version-control tools and service. | Share source and track changes. |
+
+Choose the tool for the goal: here, repeatable browser checks using Python you already know. Browser diagnostics help you investigate; Playwright repeats actions and assertions; pytest runs the tests; reports and screenshots help you understand the run.
+
+The tools are not all built into Python or Windows. Browser integration and installation in an editor do not make an external package part of the Python standard library.
+
+### Positive or negative is different from pass or fail
+
+| Input or scenario | Case type | Expected result | When the test passes |
+| --- | --- | --- | --- |
+| A normal task name | Positive | Task appears with the expected text. | The assertions match that result. |
+| Empty task text | Negative | No task is created. | The list remains empty. |
+| Correct practice login | Positive | Secure Area heading appears. | The heading check succeeds. |
+| Incorrect practice password | Negative | Password error appears. | The expected rejection is observed. |
+
+The slides describe invalid-input cases that are expected to be rejected. In pytest output, `FAILED` means an assertion or test step did not succeed; it does not mean that every negative case should report `FAILED`.
 
 ### Shared work pattern
 
@@ -491,7 +599,42 @@ Open [Playwright TodoMVC](https://demo.playwright.dev/todomvc/).
 
 The automated browser uses a separate session. You do not need to clear your usual browser's tasks.
 
+
+#### Compare manual observation with automated checking
+
+You just chose actions and observed the result yourself. That is manual testing. Next, your script will repeat fixed steps and assertions.
+
+Notice one thing that needs human judgement: is the task-completion control easy to find, or are the instructions clear? Discuss it briefly while exploring. You do not need to write a separate response.
+
+The later task-count assertion cannot decide whether the interface feels easy to use. Manual exploration and automated checks support different needs.
+
+#### Take a quick look at built-in browser diagnostics
+
+1. Right-click the task input and select Inspect.
+2. Find its `placeholder` attribute and compare it with `What needs to be done?`.
+3. Open the Console tab to see where browser messages and errors appear. It may have no errors; do not create one deliberately.
+4. Open Network and refresh once to see page requests listed.
+5. Close Developer Tools before continuing.
+
+You are looking at browser diagnostic information, not measuring performance or proving the website is error-free. The test browser uses a separate session, so you do not need to clear your usual browser's tasks.
+
 ### 7.2 Create your personal file
+
+
+#### Know the test parameters before coding
+
+This worked example uses the terms from the slides:
+
+| Test parameter | Add-task example |
+| --- | --- |
+| Test scenario | Add one valid task. |
+| Test condition | A fresh browser session with an empty task list. |
+| Test values | `Read testing notes`. |
+| Test description | Open the page, fill the input and press Enter. |
+| Expected outcome | One task with the expected text; the input is empty. |
+
+The test code below turns this plan into actions and assertions. Actual results come from running it, not from copying the expected outcome into a record.
+
 
 Member 1 creates `tests/test_member_1.py`. Use your number. Paste the complete code and save. Keep the indentation.
 
@@ -612,6 +755,22 @@ Each test gets a fresh browser session and creates its own task. It does not dep
 
 An empty or spaces-only task should not be added. This negative test passes when the list stays empty.
 
+
+### 9.0 Choose inputs for a reason
+
+The slides call this equivalent testing, also commonly called equivalence partitioning: group inputs expected to behave similarly, then choose representative examples.
+
+| Input group | Example | Expected behaviour in this exercise |
+| --- | --- | --- |
+| Meaningful task text | `Read testing notes` | Create a task. |
+| Empty or whitespace-only text | `""`, `" "`, `"   "` | Do not create a task. |
+
+The three blank values below are variations within the same rejection group. They are not three separate boundary values and do not demonstrate three different input partitions.
+
+Sampling a few values does not prove every value in a group behaves identically. The grouping is a useful test-design assumption, not exhaustive coverage.
+
+Boundary testing focuses on values next to a defined limit. This practical has no stated maximum task-name length, so do not invent one. Section 16.8 explores empty text and one- and two-character text around the minimum non-empty length.
+
 ### 9.1 Add an import
 
 At the top of your file, keep existing code and add:
@@ -692,6 +851,9 @@ Open the page, enter the practice details, click Login and find the Secure Area 
 > These are public demonstration details, not personal credentials. Use them only on this practice site. Copy capital letters and the final exclamation mark carefully.
 
 ### 10.2 Append a successful-login test
+
+Keep the cases separate: the valid credentials represent accepted input; the valid username with an incorrect password represents rejected input. These two examples do not cover all possible login errors.
+
 
 Add below existing tests:
 
@@ -922,7 +1084,7 @@ A helper is simply a Python function used to repeat useful steps.
 
 ### 12.1 Add the helper
 
-Copy both this helper and the test in Section 12.2 into the same personal file. Both `def` lines must start at the left edge, outside every other function.
+Put both this helper and the test in Section 12.2 in the same personal file. Both `def` lines must start at the left edge, outside every other function.
 
 Append to your personal file, keeping existing code:
 
@@ -978,47 +1140,58 @@ git push
 
 ### 12.4 Create one or two tests of your own
 
-Start with one small test. If it works and you have time, try a second test. Each member creates and runs their own code in their personal file. You may discuss ideas, but do not claim another member's run or screenshot as your own.
+Allow about 15 minutes. Start with one small test. If it works and time allows, try a second test.
 
-For each test you attempt, keep your own screenshot and a short write-up using Section 13.5. Describe any AI help you used using Section 13.6. You do not need a long report.
+Each member adds their own test to their personal file, such as `tests/test_member_1.py`. Discuss ideas with your group, but create and run your own code. You do not need a separate document; short code comments are enough if useful.
 
 #### Step 1: Choose a small behaviour
 
-Choose from the ideas below or another simple behaviour on the two practice websites.
-
-| Idea | What to try manually | What you could check |
+| Idea | Try manually first | What to check |
 | --- | --- | --- |
 | Active tasks | Add two tasks, complete one and select Active. | Only the unfinished task appears. |
-| All tasks | Add two tasks, complete one, select Completed and then All. | Both names appear again under All. |
-| Repeated names | Add the same fictional task name twice. | Two task rows have the expected labels. |
-| Different valid text | Add a short task name or one containing numbers. | The text is correct and the input clears. |
+| All tasks | Add two tasks, complete one, select Completed and then All. | Both task names appear under All. |
+| Repeated task names | Add the same fictional task name twice. | Two rows appear with the expected labels. |
+| Different valid names | Add a short task name or one containing numbers. | The expected text appears and the input clears. |
 
-For your first attempt, choose Active tasks or a different valid task name. Reuse the patterns you already know.
+For your first attempt, choose Active tasks or a different valid name. Reuse patterns from earlier examples. Changing only a function's name is not a new check: choose a different input or behaviour and a matching expectation.
 
-Changing only a test function's name is not a new check. Choose a different input or behaviour and make the assertion match the expected result.
+#### Step 2: Try it in the browser
 
-#### Step 2: Try it manually and decide what to check
+1. Open the relevant demonstration website manually.
+2. Perform the actions once.
+3. Notice the result.
+4. Decide what your test should check.
 
-Open the practice website and perform the steps once. Identify:
+Keep it small. Do not try to check the whole website in one test.
 
-- Starting point: what must be present before the actions?
-- Actions: what will the browser do?
-- Expected result: what should appear or change?
+#### Step 3: Identify the test parameters
 
-For example:
+Example plan:
 
 ```text
-Starting point: An empty task list.
-Actions: Add “Read a chapter” and “Write a summary”.
-         Complete “Read a chapter”. Select Active.
-Expected result: Only “Write a summary” is displayed.
+Test scenario:
+Active shows only unfinished tasks.
+
+Test condition:
+A fresh browser session with an empty task list.
+
+Test values:
+“Read a chapter” and “Write a summary”.
+
+Test description:
+Add both tasks.
+Complete “Read a chapter”.
+Select Active.
+
+Expected outcome:
+Only “Write a summary” is displayed.
 ```
 
-This is a planning example, not Python code.
+This is a plan, not Python code. Use the same test-parameter pattern for your idea.
 
-#### Step 3: Add a new test function
+#### Step 4: Start a uniquely named test
 
-Append a function with a unique name beginning with `test_`. Keep it outside every other function, with `def` at the left edge.
+Append a new function to your personal file, for example:
 
 ```python
 def test_active_filter_shows_unfinished_task(page: Page):
@@ -1026,68 +1199,97 @@ def test_active_filter_shows_unfinished_task(page: Page):
 
     # Add your setup and browser actions here.
 
-    # Add assertions for your expected result here.
+    # Add assertions that check your expected result here.
 ```
 
 > [!IMPORTANT]
-> This is only a starting point. It may run without checking the intended behaviour because it has no assertions yet. Add actions and meaningful assertions before treating it as complete.
+> This is a starting point, not a complete test. It may run without checking the behaviour because it has no assertions yet. Add actions and at least one meaningful assertion before treating it as finished.
 
-Keep the imports, URL, helper and earlier tests. Each test receives a fresh session, so create all the tasks it needs inside that test.
+Keep `def` at the left edge. Indent instructions by four spaces. Do not place your function inside another test. Keep earlier imports, `URL`, helper and tests.
 
-#### Step 4: Reuse earlier examples
+#### Step 5: Reuse familiar steps
 
-| What you need | Pattern to reuse |
+| What you need | Earlier pattern |
 | --- | --- |
 | Open the task list | `page.goto(URL)` |
 | Add a task | `add_task(page, "A fictional task")` |
-| Find rows | `page.locator(".todo-list li")` |
-| Complete the first task | The checkbox actions in Section 8. |
-| Select a filter | The Completed-link action in Section 8; change its name to `Active` or `All`. |
-| Check row count | `expect(task_items).to_have_count(...)` |
+| Find task rows | `page.locator(".todo-list li")` |
+| Complete the first task | Checkbox actions from Section 8. |
+| Select a filter | Completed-link action from Section 8; change the name to `Active` or `All`. |
+| Check count | `expect(task_items).to_have_count(...)` |
 | Check names | `expect(task_items.locator("label")).to_have_text([...])` |
 
-Replace `...` with your expected values. These incomplete reference expressions are not finished checks.
+Replace `...` with your expected value. These reference expressions are not complete checks to paste unchanged.
 
-If you use `add_task(...)`, include the complete `def add_task(...)` helper in this same file, outside every test function. It is your helper, not a built-in Playwright command.
+If you call `add_task(...)`, include the complete `def add_task(...)` helper in this same file, outside every test. It is your helper, not a built-in Playwright command.
 
-You can use Codegen to help identify an action. Read and adapt the generated code and add useful assertions.
+Each test starts with a fresh session. Create the tasks your test needs inside that test; do not rely on another test or your everyday browser.
 
-#### Step 5: Run only the new test
+Codegen can help with an unfamiliar action. Read its code and add meaningful assertions before sharing it.
 
-Save with Ctrl+S. Using the example name above:
+#### Step 6: Run your new test by itself
+
+Save with Ctrl+S. For the example name above:
 
 ```bat
-python -m pytest tests/test_member_1.py::test_active_filter_shows_unfinished_task --browser-channel %TEST_BROWSER% --headed --slowmo 300 --screenshot on --output test-results/member-1-own-test-1
+python -m pytest tests/test_member_1.py::test_active_filter_shows_unfinished_task --browser-channel %TEST_BROWSER% --headed --slowmo 300
 ```
 
-Use your member number and exact function name. Watch the page and read the terminal result. Check the source still contains assertions for the intended behaviour.
+Use your member number and exact function name. Watch the browser and read the result. If it passes, confirm it still contains the intended assertions.
 
-If it fails, compare your manual steps with the code, inspect the error and change one thing at a time. Use Section 17. Do not delete a useful assertion simply to get a pass.
+If it fails:
 
-#### Step 6: Try a second test if time allows
+1. Read the failing line and error.
+2. Check the intended page loaded.
+3. Compare automated steps with your manual attempt.
+4. Compare expected count and text with the actual page.
+5. Change one thing and rerun only this test.
 
-Choose another small behaviour or input, use a different `test_` name and include its own setup and checks. Do not make it depend on the first test.
+Use Section 17. Do not remove a useful check just to obtain a pass.
 
-For the second test, use a separate output folder, such as `test-results/member-1-own-test-2`. Copy the first test's screenshot to your evidence folder before running more commands, as explained in Section 13.5.
+#### Step 7: Try a second test if time allows
 
-If time runs out, save your attempt and continue after the lesson. Describe incomplete or failed work honestly. A failed browser test can still have useful evidence and a clear explanation. Do not claim an unrun or incomplete test is working.
+Choose another small behaviour or input. Give it a unique `test_` name and its own setup and assertions. It must not depend on the first test.
 
-#### Step 7: Run the complete personal file
+If time runs out, save your attempt and continue afterwards. Before merging, finish or repair incomplete tests so they do not silently pass without checking anything. An unfinished draft can stay in a clearly labelled local file under ignored `recordings/` until ready.
+
+#### Step 8: Run your complete file and share working changes
 
 ```bat
 python -m pytest tests/test_member_1.py --browser-channel %TEST_BROWSER% --headed
 ```
 
-With the eight guided cases unchanged, one additional ordinary test gives nine cases; two give ten. Parametrization can add more than one case.
+With eight guided cases unchanged:
 
-Keep incomplete drafts that merely open a page and contain no meaningful checks in a clearly labelled local file under ignored `recordings/`, not as silently passing tests in the shared suite. Preserve and describe the attempt in your write-up. Repair genuine failing tests before merging the shared suite; keep evidence of what you investigated.
+- One additional ordinary test function gives nine cases.
+- Two additional ordinary test functions give ten cases.
+- A parametrized addition may create more than one case.
 
-Continue to Section 13 to save your screenshots and write-up before pushing the final changes.
+After the new tests run successfully:
+
+```bat
+git add tests/test_member_1.py
+git diff --staged
+git commit -m "Add my own browser behaviour tests"
+git push
+```
+
+Use your filename. Combine working changes with the group in Section 14.
 
 
 ***
 
 ## 13. Create a report and capture screenshots
+
+
+### Why rerun the earlier tests?
+
+Regression testing means checking that existing behaviour still works after a change. In a real application, you would rerun these checks after its code changes. Here, you also rerun earlier tests after adding or changing test code to check that your test collection still works.
+
+We do not control releases of these public demonstration websites, so this lesson is not a controlled before-and-after application-change experiment.
+
+A useful repeatable test starts from its own known state. It should not rely on a task created by another test. Keep the same meaningful checks when you rerun; do not remove them to make the result look successful.
+
 
 ### 13.1 Run with automatic screenshots
 
@@ -1107,6 +1309,9 @@ python -m pytest tests/test_member_1.py --browser-channel %TEST_BROWSER% --scree
 This runs without displaying the browser. Add `--headed` to watch.
 
 ### 13.2 Open the report
+
+Use the expected outcome to interpret the actual run. For example, a negative login case passes when the rejection appears. A red failure may indicate application behaviour, a test-code problem, a missing dependency or network access: investigate before calling it an application defect.
+
 
 In Windows File Explorer, open your project, open `reports` and double-click `member-1.html`. Find names, results, durations and errors.
 
@@ -1131,136 +1336,14 @@ A screenshot shows the browser page, not the entire desktop or terminal summary.
 
 For later troubleshooting, replace `--screenshot on` with `--screenshot only-on-failure`. If all tests pass, no failure screenshots are expected.
 
-
-### 13.5 Save your own evidence and short write-up
-
-Each member creates their own evidence for the one or two tests attempted in Section 12.4. Use your own executions, screenshots and words. The shared group report does not replace your individual record.
-
-For each test, keep:
-
-- At least one screenshot from your own run showing the relevant page result.
-- A short write-up explaining what you tested, the expected result and what actually happened.
-- An AI-use disclosure as explained in Section 13.6.
-
-#### Create your personal record folders
-
-In VS Code, create the folders and file for your number:
-
-```text
-docs/
-├── member-1-own-tests.md
-└── evidence/
-    └── member-1/
-        ├── own-test-1.png
-        └── own-test-2.png
-```
-
-Create the second image only if you attempt a second test. The image names are examples; use actual screenshots, not empty files.
-
-Do not add `docs/` to `.gitignore`. The record and selected evidence are shared. Generated output under `test-results/` and `reports/` still stays local.
-
-#### Capture and keep the relevant result
-
-The single-test command in Section 12.4 saves a screenshot under its `--output` folder.
-
-1. Open that output folder in VS Code or File Explorer.
-2. Open its generated test subfolder.
-3. View the image and confirm it shows your test's relevant result.
-4. Copy the image into `docs/evidence/member-1/`.
-5. Rename the copy to `own-test-1.png` or another clear name.
-6. Copy useful evidence before rerunning: later runs may replace generated output.
-
-For a passing test, the automatic screenshot shows its final page. If the result you want to explain occurs earlier, capture that point with a `page.screenshot(...)` line, as shown in Section 16.2, or use Windows Snipping Tool while that page state is visible.
-
-A screenshot is supporting information, not a replacement for an assertion. The terminal or HTML report tells you whether the test passed or failed. You may add a terminal-result screenshot if useful, but it does not replace an image showing the relevant browser page.
-
-If code fails before the browser can display the intended result, keep a screenshot of the actual error and explain that no browser-result screenshot was produced. Do not use another person's screenshot or an unrelated successful page instead.
-
-Review images before sharing. Exclude unrelated browser tabs, account details, notifications and private information. Do not change the displayed test result to make it appear successful.
-
-#### Use this short template
-
-Paste into `docs/member-1-own-tests.md`, using your number. Replace the prompts with your actual details. Repeat the test block only if you attempt a second test.
-
-```markdown
-# My own browser tests — Member 1
-
-## Test 1: Give the test a clear name
-
-- What I am testing: Describe the behaviour in one sentence.
-- Test function: `test_your_function_name`
-- Starting point and actions: Briefly describe the setup and steps.
-- Expected result: State what should happen.
-- Actual result: State what appeared and the actual Pass, Fail or Not run status.
-- Command used: Paste the command you actually ran.
-- What I checked in the code: Name the assertion or assertions.
-- Problem or change, if any: Explain briefly, or write “None”.
-
-### My screenshot
-
-![My test result](evidence/member-1/own-test-1.png)
-
-### AI help used for this test
-
-- Tool or tools: Name them, or write “None”.
-- What I asked for: Briefly describe the question or request, or write “Not applicable”.
-- What I used: State which idea, code or explanation you used, or write “Not applicable”.
-- What I checked or changed myself: State what you reviewed, changed and ran.
-```
-
-A few clear sentences or short bullets per test are enough. Keep the expected result separate from the actual result. Do not leave a status marked Pass unless you ran the test and its checks succeeded.
-
-If the test was not run, state Not run and why. State that no execution screenshot is available rather than inventing one.
-
-### 13.6 Disclose AI help clearly
-
-AI help may include asking a tool to suggest test ideas, explain a locator, write assertions, fix an error or improve your write-up.
-
-For each student-created test, state what help you actually used. Name the tool if known; do not guess a model or version. If you used more than one tool, list each and its purpose.
-
-Examples of short disclosures:
-
-> I used ChatGPT to explain how to select the Active link. I used the suggested locator, wrote the expected task-text check myself and ran the test in Edge.
-
-> I used an AI code assistant to draft the test. I checked each action against the manual steps, changed the task names and expected labels, and ran the test in Chrome.
-
-> I used AI to shorten my write-up. The test idea and code were my own, and I checked that the edited text matched my actual run.
-
-If you used no AI help, write:
-
-> I did not use AI assistance for this test or write-up. I used the practical guide and my own code.
-
-You do not need to attach an entire chat transcript. A short description of the request and what you used is enough. Do not include private prompts, personal credentials or unrelated conversation details.
-
-Using Codegen to record browser actions is different from asking an AI assistant for help. Mention Codegen if you used it, and disclose any separate AI help accurately. Copying an example from this guide should be described as adapting the guide, not claimed as wholly original code.
-
-You remain responsible for checking that your code does what your write-up says and that the screenshot comes from your own run.
-
-### 13.7 Commit the source, write-up and selected evidence
-
-Check the source and images, then use your member number:
-
-```bat
-git status
-git add tests/test_member_1.py docs/member-1-own-tests.md docs/evidence/member-1/
-git diff --staged
-```
-
-Review the images directly in VS Code: a text diff does not show their contents.
-
-```bat
-git commit -m "Add my own tests with screenshots and AI disclosure"
-git push
-```
-
-If the source was already committed and has no further changes, it is fine for this commit to contain only the write-up and selected images.
-
-Do not commit the entire generated `test-results` or `reports` folder. Continue to Section 14 to combine the personal source and records with the group project.
-
-
 ***
 
 ## 14. Combine the group files
+
+These activities practise version control and shared source. All tests are started manually on your computer. Pushing or merging a branch does not automatically run tests: no GitHub Actions workflow or other CI/CD pipeline is configured here.
+
+The slides show how automated tests can later fit into continuous testing. That is a next step, not something this repository already performs.
+
 
 ### 14.1 Check and push
 
@@ -1269,7 +1352,7 @@ git status
 git push
 ```
 
-If intended source or personal-record changes remain, run your tests, add the intended files, inspect staged changes, commit and push. Include selected personal screenshots under `docs/evidence/member-1/`, using your number. Do not add environments, recordings or whole generated report/output folders.
+If intended source changes remain, run your file, add it, inspect staged changes, commit and push. Do not add reports, environments, recordings or screenshots.
 
 ### 14.2 Open and merge your PR
 
@@ -1278,7 +1361,7 @@ On GitHub:
 1. Open a PR from your personal branch to `main`.
 2. Use a title such as `Add Member 1 browser tests`.
 3. Look through Files changed with another member.
-4. Check source changes belong to your file, assertions are meaningful, your short write-up includes an accurate AI disclosure, evidence links open and selected images show your actual run. Exclude private data and whole generated-output folders.
+4. Check changes belong to your file, assertions are meaningful and no private data or local outputs appear.
 5. Merge one member's PR at a time.
 
 Separate filenames allow all files to sit beside each other. Do not edit another member's file during this activity.
@@ -1303,7 +1386,7 @@ Choose one member:
 python -m pytest --browser-channel %TEST_BROWSER% --html=reports/group-results.html --self-contained-html
 ```
 
-With only guided cases, there are eight executions per member file. Your own completed tests increase that number. For example, nine cases per member gives 27 executions for three members, 36 for four or 45 for five. Check the actual collected count; members may have different totals.
+With only guided cases, there are eight executions per member file. Your own completed tests increase this number. For example, nine cases per member give 27 executions for three members, 36 for four or 45 for five. Check the actual collected count because members may add different numbers of cases.
 
 Repeated guided cases do not mean additional unique functional coverage. Avoid repeated whole-group runs without a reason.
 
@@ -1379,6 +1462,8 @@ Suggested times are planning guides, not limits.
 | 16.5 Try another browser | 10–15 minutes, plus downloads | Reuse tests. |
 | 16.6 Improve a recording | 15–20 minutes | Useful shared code. |
 | 16.7 Inspect page elements and history | 10 minutes | Connect locators and changes. |
+| 16.8 Explore boundary values | 10–15 minutes | Minimum-length examples and expected results. |
+| 16.9 Compare a built-in Python tool | 10–15 minutes | Local unit tests versus browser tests. |
 
 Before changing source again, update clean `main` and create a new branch:
 
@@ -1418,7 +1503,7 @@ Look through navigation, text entry, Enter and the failed check. Restore:
 expect(task_labels).to_have_text(["Read testing notes"])
 ```
 
-Save and rerun your file. With only guided cases, success reports `8 passed`.
+Save and rerun your file. With only the eight guided cases, success reports `8 passed`. Completed tests of your own increase this total.
 
 ```bat
 git diff
@@ -1528,6 +1613,104 @@ git show COMMIT_ID
 ```
 
 Press `q` if Git opens a scrolling view.
+
+
+### 16.8 Explore boundary values for task text
+
+The slides describe checking at a boundary and close to it. For task text, compare lengths zero, one and two using non-whitespace characters. Do not assume the site has an unstated maximum length.
+
+| Input | Length | Expected outcome for this exercise |
+| --- | ---: | --- |
+| `""` | 0 | No task is added. |
+| `"A"` | 1 | One task labelled A is added. |
+| `"AB"` | 2 | One task labelled AB is added. |
+
+One character is the minimum non-empty length used here. Zero and two are its adjacent non-negative lengths. Whitespace-only text is a separate validation consideration, not evidence of a maximum-length boundary.
+
+First try the values manually. Then append this test to your personal file, keeping `import pytest`, `Page`, `expect` and `URL`:
+
+```python
+@pytest.mark.parametrize(
+    "task_text, expected_labels",
+    [
+        ("", []),
+        ("A", ["A"]),
+        ("AB", ["AB"]),
+    ],
+    ids=["zero-characters", "one-character", "two-characters"],
+)
+def test_task_text_minimum_length_examples(
+    page: Page,
+    task_text: str,
+    expected_labels: list,
+):
+    page.goto(URL)
+
+    task_input = page.get_by_placeholder(
+        "What needs to be done?",
+        exact=True,
+    )
+    task_items = page.locator(".todo-list li")
+    expect(task_items).to_have_count(0)
+
+    task_input.fill(task_text)
+    task_input.press("Enter")
+
+    expect(task_items).to_have_count(len(expected_labels))
+    expect(task_items.locator("label")).to_have_text(expected_labels)
+```
+
+Each input now has its own expected list. `[]` is an empty list; `len(expected_labels)` gives the expected number of tasks. This adds three executions, including another empty-input example already sampled in the guided tests. It does not add three wholly new behaviours.
+
+Run just this test while learning, then your personal file once after it works. The total depends on all optional additions in that file.
+
+### 16.9 Compare a built-in Python tool with the browser tools
+
+The tools slides show Python's built-in `unittest`. This short optional example contrasts a focused local unit test with the browser checks above. You do not need to install another package.
+
+Create `examples/builtin_unittest_example.py` in a new `examples` folder:
+
+```python
+import unittest
+
+
+def clean_task_name(text: str):
+    return text.strip()
+
+
+class TestCleanTaskName(unittest.TestCase):
+    def test_removes_outer_spaces(self):
+        self.assertEqual(clean_task_name("  Read notes  "), "Read notes")
+
+    def test_keeps_normal_text(self):
+        self.assertEqual(clean_task_name("Read notes"), "Read notes")
+
+    def test_spaces_become_empty_text(self):
+        self.assertEqual(clean_task_name("   "), "")
+
+
+if __name__ == "__main__":
+    unittest.main()
+```
+
+This file defines a tiny function and checks its returned values. `self.assertEqual(actual, expected)` compares two values. `unittest.TestCase` provides the check methods; `self` refers to the current test object.
+
+Run it directly:
+
+```bat
+python examples/builtin_unittest_example.py
+```
+
+If all three checks succeed, it reports three tests and `OK`. No browser opens. This is a unit test of the small function in this file, not a test of TodoMVC's implementation. The example is separate from your guided browser-case count.
+
+| Tool choice | What it checks here |
+| --- | --- |
+| Built-in `unittest` | Return values of the local `clean_task_name()` function. |
+| External pytest + Playwright | Visible behaviour of the running demonstration websites. |
+| Built-in browser Developer Tools | Diagnostic information used while investigating the page. |
+
+Choose according to the goal. These tools complement one another; you do not need to use every tool from the slides in one practical.
+
 
 ***
 
@@ -1750,7 +1933,7 @@ Optional tests increase the total. Running without a filename selects the group 
 | `NameError: name 'expect' is not defined` | The assertion tool was not imported. | Keep `from playwright.sync_api import Page, expect` at the top. |
 | `NameError: name 'pytest' is not defined` | Parametrization needs the pytest import. | Add `import pytest` at the top. |
 | `NameError: name 'URL' is not defined` | The shared website variable is missing. | Keep the provided `URL = ...` line above the tests. |
-| `NameError: name 'add_task' is not defined` | The helper is missing or misspelled. | Keep the supplied helper in your file and match its name in calls. |
+| `NameError: name 'add_task' is not defined` | The helper is missing, misspelled or inside another function. | Put the complete helper in the same file as the test, with its `def` line at the left edge. Save with Ctrl+S and rerun. |
 | `fixture 'task_text' not found` | pytest is not receiving parameter values. | Keep the `@pytest.mark.parametrize(...)` block immediately above the correct function and match `task_text` in both. |
 
 Fix the indicated line, but also inspect the line immediately above it. An unclosed bracket or quote can cause the next line to be reported.
@@ -2014,7 +2197,7 @@ python -m pytest recordings/member_1.py --browser-channel %TEST_BROWSER% --heade
 
 A passing test means its particular checks succeeded in that run. It does not prove the whole website is error-free.
 
-Keep examples small and understandable. Use failures to understand what happened. Share working source, your short write-up and selected personal evidence. Do not upload private data or entire generated-output folders.
+Keep examples small and understandable. Use failures to understand what happened. Share working source without uploading private data or local browser outputs.
 
 ```text
 Choose a behaviour → Define the expectation → Automate → Run
