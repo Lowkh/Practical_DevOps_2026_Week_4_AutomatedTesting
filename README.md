@@ -114,6 +114,7 @@ Open a page → Perform an action → Check the result
 | Pull request, or PR | A request to combine a branch with another branch. |
 | Merge | Combine changes from branches. |
 | Pull | Bring shared changes into your local branch. |
+| `.gitignore` | A file listing local files and folders that Git should leave out when adding new files. |
 
 ### Actions and assertions
 
@@ -327,6 +328,10 @@ Keep the existing README. Git does not store empty folders. It is normal for `te
 
 ### 4.3 Create `.gitignore`
 
+Create a file named exactly `.gitignore` in the main project folder, beside `README.md`. Do not name it `.gitignore.txt`.
+
+Paste and save:
+
 ```gitignore
 .venv/
 __pycache__/
@@ -337,7 +342,36 @@ test-results/
 .env
 ```
 
-This keeps local environments and generated outputs out of shared commits. Source code is shared; browser reports and traces remain local.
+This file tells Git to leave out the local files and folders listed below. They stay on your computer but are not normally added to commits.
+
+| Entry | What stays local |
+| --- | --- |
+| `.venv/` | Your project's Python environment and installed packages. |
+| `__pycache__/` | Temporary files created by Python. |
+| `.pytest_cache/` | Temporary information saved by pytest. |
+| `reports/` | Generated HTML results reports. |
+| `recordings/` | Browser recordings used for individual practice. |
+| `test-results/` | Generated screenshots, traces and other browser output. |
+| `.env` | A local settings file that may hold private values. This guide does not require one. |
+
+Commit `.gitignore` itself so everyone who clones the repository uses the same rules. Create it before adding environments or generated files to Git.
+
+Keep test source and configuration files shared:
+
+```text
+README.md
+.gitignore
+requirements.txt
+pytest.ini
+tests/test_member_1.py
+tests/test_member_2.py
+...
+```
+
+> [!IMPORTANT]
+> `.gitignore` is not a security tool. It does not remove files already tracked by Git or erase information from earlier commits. Always inspect selected changes before committing.
+>
+> For this practical, recordings stay local. If your group later chooses to share a useful recorded script, copy its cleaned-up test code into an appropriately named file under `tests/` and run it before committing.
 
 ### 4.4 Create `requirements.txt`
 
@@ -364,7 +398,7 @@ Save the files, then run:
 git status
 git add .gitignore requirements.txt pytest.ini
 git diff --staged
-git commit -m "Add shared testing configuration"
+git commit -m "Add shared testing configuration and ignore rules"
 git push -u origin setup/testing-files
 ```
 
@@ -397,7 +431,7 @@ git switch -c testing/member-1
 git status
 ```
 
-Use your own member number. You should now be on your personal branch and able to open the configuration files.
+Use your own member number. You should now be on your personal branch and able to open `.gitignore` and the configuration files.
 
 ### 5.2 Create the virtual environment
 
@@ -444,7 +478,7 @@ python -m playwright --version
 
 Wait for installation to finish before running the version commands. Each version command should display a version number.
 
-No Playwright browser download is needed for the installed Chrome or Edge used in the main activities.
+No Playwright browser download is needed for installed Chrome or Edge used in the main activities.
 
 ### 5.6 Select your browser for this terminal
 
@@ -470,9 +504,18 @@ echo %TEST_BROWSER%
 
 You should see `msedge` or `chrome`. `%TEST_BROWSER%` lets later commands use your choice without changing shared files. This setting lasts only for the current Command Prompt session.
 
-### 5.7 Create local folders
+### 5.7 Create local folders and check ignore rules
 
-Use VS Code to create `tests`, `recordings` and `reports` if they are missing.
+Use VS Code to create `tests`, `recordings` and `reports` if missing.
+
+Run:
+
+```bat
+git status
+git check-ignore .venv/
+```
+
+`.venv/` should not appear as a new file to commit. The second command should print `.venv/`, confirming that an ignore rule matches it.
 
 ### Returning another day
 
@@ -846,7 +889,7 @@ git status
 git push
 ```
 
-If your personal source file still has changes you intend to keep, run your tests, then add and commit that file before pushing. Do not add local environments, recordings, reports or traces.
+If your personal source file still has changes you intend to keep, run your tests, then add and commit that file before pushing. Do not add local environments, recordings, reports or traces. Use explicit filenames rather than adding everything without checking.
 
 ### 13.2 Open your pull request
 
@@ -856,7 +899,7 @@ On GitHub:
 2. Use a title such as `Add Member 1 browser tests`.
 3. In Files changed, check that the changes belong to your work.
 4. Ask another group member to look through the file with you.
-5. Check that the assertions are correct, the deliberate mistake is gone and no private data is included.
+5. Check that the assertions are correct, the deliberate mistake is gone and no private data or generated output is included.
 6. Merge one member's pull request at a time.
 
 Members use different filenames, so their guided tests can sit beside one another without replacing each other's work. Do not edit another member's file during this activity.
@@ -950,6 +993,46 @@ The folder should be your cloned project folder in the location you chose. The P
 | Nothing to commit | The file may already be committed, unchanged, unsaved or ignored. Use `git status` and `git diff`. |
 | Local main does not show merged files | Run `git pull --ff-only origin main` from clean local `main`. |
 | Git asks about overwriting local changes | Stop and inspect `git status`. Commit intended source changes on your work branch before switching. |
+| Many environment or report files appear in Git | Check `.gitignore` is saved in the main project folder with the correct name. Read the steps below if the files were already added. |
+
+### If `.gitignore` does not appear to work
+
+First check whether an ignore rule matches a path:
+
+```bat
+git check-ignore -v .venv/
+```
+
+If nothing appears, check the file's name, location and contents. Make sure it is `.gitignore`, not `.gitignore.txt`.
+
+If generated files were selected with `git add` but have not been committed, remove that selection without deleting the files:
+
+```bat
+git restore --staged .venv/
+```
+
+Use the actual unwanted path, then check `git status` again.
+
+If a non-sensitive local folder was already committed, `.gitignore` alone does not stop Git tracking it. To stop tracking the folder while keeping your local copy:
+
+```bat
+git rm -r --cached .venv/
+git status
+git diff --staged
+```
+
+Use this only for a local-only folder that was mistakenly tracked, not a source folder. Review the staged removal, then commit it and the ignore rules on your branch:
+
+```bat
+git add .gitignore
+git commit -m "Stop tracking local Python environment"
+git push
+```
+
+Combine that correction through a PR. This removes the folder from the current project version, not from earlier Git history.
+
+> [!WARNING]
+> If credentials or private information were committed, do not treat `.gitignore` or a later deletion as a complete fix. Stop sharing the affected content and use the relevant account or organisation process to revoke exposed credentials and handle the disclosure.
 
 ### If a merge conflict appears
 
@@ -979,6 +1062,7 @@ Use your own member number.
 | Inspect changes | `git diff` |
 | Select your source file | `git add tests/test_member_1.py` |
 | Inspect selected changes | `git diff --staged` |
+| Check an ignore rule | `git check-ignore -v .venv/` |
 | Save selected changes | `git commit -m "Describe the change"` |
 | Upload commits | `git push` |
 
