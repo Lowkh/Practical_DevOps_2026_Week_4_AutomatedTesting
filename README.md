@@ -1,586 +1,147 @@
-# Automated Testing Tools Team Practical
+# Learn Automated Testing: A Self-Paced Practical
 
-> A guided, hands-on introduction to browser automation and testing tools for students with no prior automated testing experience.
+A step-by-step introduction using Python, Playwright and pytest.
 
-> [!NOTE]
-> ## Educational Practice Repository
->
-> This public repository has been created solely for an introductory automated testing tools practical. Its purpose is to help students explore browser inspection, recording, replay, assertions, data-driven testing, browser comparisons, reports and diagnostic evidence.
->
-> All task names, examples, scenarios and other student-created content are fictional and prepared for educational purposes only. Any resemblance to actual persons, organisations, events or circumstances is purely coincidental.
->
-> Do not include confidential, personal, sensitive, commercially sensitive or copyrighted material in this repository. This includes passwords, access tokens, API keys, identification numbers, personal contact details and private photographs.
+## About this guide
 
-This in-class practical helps you learn automated testing tools by using them. You will work in a small group to test a live demonstration task-list website.
+You will use a browser to test a demonstration task-list website. You do not need to build a website or application server.
 
-The focus is on understanding what the tools offer: recording interactions, replaying actions, checking results, varying inputs, comparing browsers, reading reports and investigating failures.
+This is a learning practical, not an assessment. There are no marks, submissions, required reflections or evidence portfolios. You can repeat activities and take breaks whenever you need them.
 
-No previous automated testing experience is required. The guided activities use Python, which you already know. You do not need to learn JavaScript, build a website or create an application server.
+Start with one browser: Chromium. Other browsers and Git are optional later activities.
 
-All tests are started manually on your computer. Git and GitHub are used to record and share your work.
+### What you need to know first
 
-### Tools used in this practical
+You do not need previous automated testing experience. This guide provides complete test code for you to copy.
 
-| Tool | What you will use it for |
+Some Python code is used. You do not need to memorise it. If Python is also new to you, read the explanations after each example and change only the lines the guide identifies.
+
+### What you will do
+
+1. Set up the tools.
+2. Try the website by hand.
+3. Run your first automated test.
+4. Add another test.
+5. Try several inputs with one test.
+6. Record browser actions.
+7. Read a report and investigate a failed check.
+8. Try optional activities when you are ready.
+
+Work at your own pace. Setup and downloads may take longer than the activities themselves. You do not need to finish everything in one sitting.
+
+### Use safe practice data
+
+Use fictional task names such as `Read testing notes`.
+
+Do not enter passwords, personal details, API keys or confidential information. Screenshots and traces can contain page content.
+
+Use this demonstration site only for the small practice runs in this guide. Do not run load tests, security scans or continuous loops against it.
+
+---
+
+## 1. Meet the tools
+
+| Tool | Simple explanation |
 | --- | --- |
-| Python | Write and execute test code. |
-| Visual Studio Code | Edit scripts and practical records. |
-| Microsoft Python extension for VS Code | Select the Python environment and support Python editing. |
-| Browser Developer Tools | Examine page elements and their attributes. |
-| Playwright | Control browsers and check website behaviour. |
-| Playwright Codegen | Record interactions and generate Python test code. |
-| pytest | Discover and execute tests. |
-| pytest-html | Generate a readable HTML report. |
-| Playwright Trace Viewer | Inspect actions, page snapshots and errors. |
-| Git and GitHub | Preserve and combine contributions. |
+| Python | Runs the code you write. |
+| VS Code | An editor for creating and changing files. |
+| Terminal | A window where you type commands. |
+| Playwright | Opens a browser and performs actions such as typing and clicking. |
+| pytest | Finds your tests, runs them and displays the results. |
+| Chromium | The browser used for the main activities. |
+| Codegen | A Playwright tool that records browser actions and creates code. |
+| HTML report | A results page you can open in a browser. |
+| Trace Viewer | A tool for looking back through the actions in a test run. |
 
-Codegen and Trace Viewer are included with Playwright. Developer Tools is included with desktop browsers such as Chrome and Edge.
-
-### Browser options included
-
-| Browser option | Installation method | Test selection |
-| --- | --- | --- |
-| Chromium | Install through Playwright. | `--browser chromium` |
-| Firefox | Install Playwright's Firefox build. | `--browser firefox` |
-| WebKit | Install Playwright's WebKit build. | `--browser webkit` |
-| Google Chrome | Use installed stable Google Chrome. | `--browser chromium --browser-channel chrome` |
-| Microsoft Edge | Use installed stable Microsoft Edge. | `--browser chromium --browser-channel msedge` |
-
-> [!IMPORTANT]
-> Playwright's Firefox is a specially supported build. Installing ordinary Firefox alone does not replace it.
->
-> Playwright WebKit is not the installed Safari application. Do not report a WebKit run as a test performed in Safari.
-
-| Item | Details |
-| --- | --- |
-| Group size | 4–5 students |
-| Guided in-class duration | Approximately 2.5 hours |
-| Required knowledge | Python, basic terminal use and the earlier Git practical |
-| Test website | [Playwright TodoMVC demonstration](https://demo.playwright.dev/todomvc/) |
-| Practical outcome | Test scripts, execution records, selected evidence, reflections and Git history |
-| Focus | Exploring automated testing tools, not developing an application |
-
-## Contents
-
-1. [Learning outcomes](#1-learning-outcomes)
-2. [Understand the workflow](#2-understand-the-workflow)
-3. [Prepare your group and computers](#3-prepare-your-group-and-computers)
-4. [Create and clone the repository](#4-create-and-clone-the-repository)
-5. [Create the starting files](#5-create-the-starting-files)
-6. [Prepare your individual environment](#6-prepare-your-individual-environment)
-7. [Explore, record and replay](#7-explore-record-and-replay)
-8. [Create automated checks](#8-create-automated-checks)
-9. [Run data-driven tests and compare browsers](#9-run-data-driven-tests-and-compare-browsers)
-10. [Investigate a failed test](#10-investigate-a-failed-test)
-11. [Create your own tests](#11-create-your-own-tests)
-12. [Combine contributions and reflect](#12-combine-contributions-and-reflect)
-13. [Troubleshooting and command reference](#13-troubleshooting-and-command-reference)
-14. [Individual completion checklist](#14-individual-completion-checklist)
-15. [Optional extension activities — outside the in-class practical](#15-optional-extension-activities--outside-the-in-class-practical)
-
-***
-
-## 1. Learning outcomes
-
-By the end of this practical, you should be able to:
-
-- Explain the role of each selected tool.
-- Inspect a page element using browser Developer Tools.
-- Record and replay browser interactions.
-- Distinguish an action from an assertion.
-- Execute positive and negative tests.
-- Run the same test with different data.
-- Select different browsers without rewriting a test.
-- Launch Chrome and Edge explicitly from Python.
-- Generate an HTML report.
-- Investigate a failure using a screenshot and trace.
-- Create additional tests of your own.
-- Explain your contributions using Git history.
-
-### Working through this practical
-
-1. Complete the activities in sequence.
-2. Enter commands in the terminal, not in your documents.
-3. Enter Python code in the indicated `.py` files.
-4. Replace member numbers, addresses and filenames with your own.
-5. Read explanations before running commands.
-6. Wait for all members at group checkpoints.
-7. Record actual results only after execution.
-
-Use Git Bash on Windows, or Terminal on macOS or Linux. Alternative Windows activation commands are also provided.
-
-> [!IMPORTANT]
-> Run commands from inside your cloned repository unless instructed otherwise. Check your branch and working directory before making changes. Activate the Python environment before running testing commands.
-
-### Suggested timing
-
-Install base software and browser binaries before class where possible.
-
-| Activity | Time |
-| --- | ---: |
-| Group setup, starting files and environment checks | 25 minutes |
-| Explore the website | 10 minutes |
-| Record and replay | 20 minutes |
-| Create automated checks | 25 minutes |
-| Data-driven tests and allocated browser comparisons | 20 minutes |
-| Failure investigation | 20 minutes |
-| Self-designed tests | 20 minutes |
-| Integration and reflection | 10 minutes |
-| Total | 150 minutes |
-
-The Chrome and Edge standalone examples are additional demonstrations. Divide them between members or complete the remaining examples outside class if needed.
-
-### Related lesson materials
-
-- `03-3-Testing-Tools-1.pptx`
-- `OAL-03-2-Manual-vs-Automated-1.pptx`
-
-***
-
-## 2. Understand the workflow
-
-### A simple mental model
-
-The website is the application you want to check.
-
-Playwright follows your browser instructions. pytest finds and executes your tests. Assertions compare observed behaviour with your expectations.
-
-### Key terms
-
-| Term | Meaning |
-| --- | --- |
-| Test case | A scenario with steps and an expected result. |
-| Locator | An instruction identifying an element on a page. |
-| Action | An operation such as typing, clicking or pressing a key. |
-| Assertion | A check comparing behaviour with an expectation. |
-| Positive test | A test using valid inputs or an expected action. |
-| Negative test | A test checking invalid inputs or actions. |
-| Parameterized test | One definition executed with several input values. |
-| Fixture | A reusable setup resource, such as Playwright's `page`. |
-| Browser channel | A selection such as installed Google Chrome or Microsoft Edge. |
-| Headed execution | Running with the browser window visible. |
-| Headless execution | Running without displaying a browser window. |
-| Report | A summary of execution and outcomes. |
-| Trace | A record of actions and diagnostic information. |
-| Virtual environment | A project-specific Python environment. |
-| Personal work branch | Your own Git branch for developing a contribution. |
-| Pull request, or PR | A request to combine your branch with shared `main`. |
-
-### Actions and assertions
-
-Actions:
-
-```python
-task_input.fill("Read testing notes")
-task_input.press("Enter")
-```
-
-Assertion:
-
-```python
-expect(task_labels).to_have_text(["Read testing notes"])
-```
-
-A script that clicks and types has not necessarily checked the result.
-
-### Positive and negative do not mean pass and fail
-
-| Scenario | Expected behaviour | Passing outcome |
-| --- | --- | --- |
-| Add a normal task. | A task appears with the entered text. | The task appears correctly. |
-| Submit an empty task. | No task is added. | The task list remains unchanged. |
-
-A negative test passes when invalid input is handled as expected.
-
-### One test, different browsers
+An automated test usually follows this pattern:
 
 ```text
-Same test instructions
-        ↓
-Chromium / Firefox / WebKit / Chrome / Edge
-        ↓
-Compare observed outcomes
+Open a page → Perform an action → Check the result
 ```
 
-For the guided pytest tests, select browsers through command-line arguments. Do not create five copies of the same test merely to change the browser.
+An action does something. An assertion checks something.
 
-### Saving, committing and sharing
+For example:
 
-```text
-Save   → Write changes to a file.
-Commit → Record selected changes locally.
-Push   → Send local commits to GitHub.
-PR     → Propose combining your branch with main.
-```
+- Typing a task is an action.
+- Checking that the task appears is an assertion.
 
-Saving does not commit. Committing does not upload. Pushing a branch does not merge it into `main`.
+---
 
-### Group working rules
+## 2. Set up your computer
 
-- Use your own branch, test file, results file and evidence folder.
-- Every member completes the guided exercises.
-- Keep commits focused and messages meaningful.
-- Keep these instructions in `README.md`.
-- Do not claim another member's execution as your own.
-- Do not change expectations merely to obtain a pass.
-- Use fictional data and small, deliberate test runs.
+Complete this section once for this project.
 
-A formal findings report, assigned review rotation and peer-reproduction exercise are not required.
+When you return another day, use Section 3 instead.
 
-> [!WARNING]
-> Do not perform load testing, security scanning or high-frequency repeated runs against the public website. Do not force-push, use `git reset --hard` or delete the repository to bypass a problem. Preserve your work and ask your Tutor if needed.
+### 2.1 Install Python and VS Code
 
-***
+If they are already installed, do not reinstall them.
 
-## 3. Prepare your group and computers
+- Python: https://www.python.org/downloads/
+- VS Code: https://code.visualstudio.com/
 
-### 3.1 Assign responsibilities
+Use Python 3.12 or 3.13 for this guide.
 
-| Member | Initial coordination responsibility | Individual test file |
-| --- | --- | --- |
-| 1 | Timing and activity progress | `tests/test_member_1.py` |
-| 2 | Environment setup notes | `tests/test_member_2.py` |
-| 3 | Open-ended task allocation | `tests/test_member_3.py` |
-| 4 | Evidence organisation | `tests/test_member_4.py` |
-| 5, if any | Repository integration and summary | `tests/test_member_5.py` |
+On Windows, select `Add Python to PATH` if the installer offers it.
 
-For four members, Members 1 and 4 share integration and summary coordination.
+Close and reopen VS Code after installation.
 
-These responsibilities do not replace individual testing. Each member uses their own computer and GitHub account.
+In VS Code:
 
-### 3.2 Install or verify Python
+1. Open Extensions.
+2. Search for `Python`.
+3. Install the extension published by Microsoft.
 
-Use Python 3.12 or 3.13.
+This extension helps the editor work with Python. It does not install Python itself.
 
-#### Windows
+On a managed computer, use the approved software installation method. If installation requires administrator access, ask your IT support team to install the missing software. Do not bypass computer policies.
 
-1. Open [Python Downloads](https://www.python.org/downloads/).
-2. Download a stable installer appropriate for your computer.
-3. Run it.
-4. If `Add Python to PATH` is shown, select it.
-5. Complete installation and reopen your terminal.
-6. Check:
+### 2.2 Create and open a project folder
+
+1. Create a folder named `automated-testing-practice` in a location where you can save files.
+2. Open VS Code.
+3. Select File → Open Folder.
+4. Open `automated-testing-practice`.
+5. Select Terminal → New Terminal.
+
+Keep this folder open throughout the practical.
+
+Commands go in the terminal.
+
+Python code goes in a `.py` file.
+
+Do not type commands at a Python `>>>` prompt. If you see `>>>`, type `exit()` and press Enter first.
+
+### 2.3 Check Python
+
+On Windows, enter:
 
 ```powershell
 python --version
 ```
 
-If unavailable:
+If that does not work, try:
 
 ```powershell
 py -3 --version
 ```
 
-If the launcher works, use `py -3` to create the virtual environment later.
-
-#### macOS
-
-Check:
+On macOS or Linux, enter:
 
 ```bash
 python3 --version
 ```
 
-If necessary, install a stable version from [Python Downloads for macOS](https://www.python.org/downloads/macos/), reopen Terminal and check again.
+You should see a Python version.
 
-#### Linux
+If the command is not found, reopen the terminal after installing Python and try again.
 
-```bash
-python3 --version
-python3 -m pip --version
-```
+### 2.4 Create a virtual environment
 
-Ask your Tutor or system administrator to install missing Python, pip or virtual-environment support. Do not alter system-managed Python or bypass restrictions.
+A virtual environment keeps this project's Python packages separate from other projects.
 
-### 3.3 Install or verify Git
-
-```bash
-git --version
-```
-
-If unavailable, install the appropriate version from [Git Downloads](https://git-scm.com/downloads), reopen your terminal and check again.
-
-Set your identity if needed:
-
-```bash
-git config --global user.name "Your Name"
-git config --global user.email "YOUR_COMMIT_EMAIL"
-```
-
-Use an email associated with GitHub or your GitHub-provided no-reply email. These settings identify commits; they do not sign you in. Complete authentication before continuing.
-
-### 3.4 Install Visual Studio Code and its Python extension
-
-1. Install [Visual Studio Code](https://code.visualstudio.com/) for your operating system.
-2. Open VS Code.
-3. Open Extensions.
-4. Search for `Python`.
-5. Install the extension published by Microsoft.
-
-The extension does not install Python itself. Another Python editor may be used with your Tutor's approval.
-
-### 3.5 Install or verify Google Chrome
-
-If already installed, do not reinstall it.
-
-Otherwise:
-
-1. Open [Google Chrome](https://www.google.com/chrome/).
-2. Download stable Chrome for your operating system.
-3. Complete installation.
-4. Open it once to finish any first-run setup.
-5. Close it before the automation activity.
-
-Do not connect a personal profile for this practical.
-
-### 3.6 Install or verify Microsoft Edge
-
-If already installed, do not reinstall it.
-
-Otherwise:
-
-1. Open [Microsoft Edge](https://www.microsoft.com/edge/download).
-2. Download stable Edge for your operating system.
-3. Complete installation.
-4. Open it once to finish any first-run setup.
-5. Close it before the automation activity.
-
-> [!IMPORTANT]
-> Use approved installation methods on managed computers. Browser policies may prevent automation. Record the restriction and consult your Tutor; do not bypass it.
-
-### Checkpoint
-
-- [ ] Everyone has Python, Git, an editor and a GitHub account.
-- [ ] GitHub authentication is ready.
-- [ ] Chrome and Edge availability has been checked.
-- [ ] Everyone knows their member number and responsibility.
-- [ ] Everyone understands the data-handling rules.
-
-***
-
-## 4. Create and clone the repository
-
-### 4.1 Coordinator only: create the shared repository
-
-On GitHub:
-
-1. Create `automated-testing-tools-team-XX`, replacing `XX` with your group identifier.
-2. Set visibility to Public.
-3. Add a README and confirm the default branch is `main`.
-4. Place these instructions in `README.md`, including the disclaimer.
-5. Invite all group members.
-6. Invite your Tutor using the username provided.
-7. Confirm invitations are accepted.
-
-> [!NOTE]
-> If your Tutor provides a repository, use it instead. Follow institutional visibility requirements if they differ. Public repositories may be viewed by anyone; include fictional, non-sensitive content only.
-
-### 4.2 Everyone: clone the repository
-
-On GitHub, open the repository, select Code → HTTPS and copy the URL.
-
-Type `git clone`, add one space and paste that URL:
-
-```bash
-git clone PASTE_THE_HTTPS_URL_COPIED_FROM_GITHUB_HERE
-```
-
-Do not type the placeholder literally or use Markdown link syntax in the command.
-
-Enter the folder created, using its actual name:
-
-```bash
-cd automated-testing-tools-team-XX
-```
-
-Open it in VS Code through `File → Open Folder`.
-
-### 4.3 Inspect your local repository
-
-```bash
-git status
-git branch
-git remote -v
-git log --oneline -5
-```
-
-| Command | What to check |
-| --- | --- |
-| `git status` | Current branch and uncommitted changes. |
-| `git branch` | The `*` identifies the current branch. |
-| `git remote -v` | `origin` points to the group repository. |
-| `git log --oneline -5` | Up to five recent commits. |
-
-Press `q` if a scrolling view opens.
-
-### Checkpoint
-
-- [ ] Members and the Tutor have access.
-- [ ] The disclaimer appears in `README.md`.
-- [ ] I am inside the cloned repository on `main`.
-- [ ] My working directory is clean.
-- [ ] `origin` points to the correct repository.
-
-***
-
-## 5. Create the starting files
-
-> [!IMPORTANT]
-> The coordinator completes this section first. Others wait until the setup PR has merged.
-
-### 5.1 Create a setup branch
-
-```bash
-git switch main
-git pull --ff-only origin main
-git switch -c setup/testing-files
-```
-
-The first command selects local `main`. The second updates it only if Git can move it directly forward. The third creates and selects the setup branch.
-
-### 5.2 Prepare the structure
-
-```text
-README.md
-.gitignore
-requirements.txt
-pytest.ini
-tests/
-examples/
-docs/
-├── team-plan.md
-├── summary.md
-├── results/
-│   ├── member-1.md
-│   ├── member-2.md
-│   ├── member-3.md
-│   ├── member-4.md
-│   └── member-5.md
-├── reflections/
-│   ├── member-1.md
-│   ├── member-2.md
-│   ├── member-3.md
-│   ├── member-4.md
-│   └── member-5.md
-└── evidence/
-```
-
-Omit Member 5's files for four members. Initial documents may contain a heading only. Git does not track empty folders.
-
-The `tests/` folder holds pytest tests. The `examples/` folder holds standalone browser-launch demonstrations.
-
-### 5.3 Create `.gitignore`
-
-```gitignore
-.venv/
-__pycache__/
-.pytest_cache/
-test-results/
-reports/
-recordings/
-.env
-```
-
-Selected evidence will be copied into `docs/evidence/` before committing.
-
-### 5.4 Create `requirements.txt`
-
-```text
-pytest-playwright
-pytest-html
-```
-
-### 5.5 Create `pytest.ini`
-
-```ini
-[pytest]
-testpaths = tests
-addopts = -v
-```
-
-Keep browser selection in commands so each run is explicit.
-
-### 5.6 Create `docs/team-plan.md`
-
-```markdown
-# Team plan
-
-## Group identifier
-
-## Members
-
-| Member | Non-sensitive identifier | GitHub username | Responsibility |
-| --- | --- | --- | --- |
-| 1 | | | |
-| 2 | | | |
-| 3 | | | |
-| 4 | | | |
-
-## Environment setup notes
-
-## Browser availability
-
-## Browser comparison allocation
-
-## Open-ended testing allocation
-
-## Repository integration arrangements
-```
-
-Add Member 5 if needed.
-
-### 5.7 Stage, commit and push
-
-```bash
-git status
-git add .gitignore requirements.txt pytest.ini docs/
-git diff --staged
-git commit -m "Add testing configuration and group records"
-git push -u origin setup/testing-files
-```
-
-### 5.8 Create and merge the setup PR
-
-1. Create a PR on GitHub.
-2. Set base to `main`.
-3. Set compare to `setup/testing-files`.
-4. Inspect Files changed and confirm the intended files.
-5. Merge the setup PR.
-
-Base is the destination; compare contains the proposal. A formal review exercise is not required.
-
-### 5.9 Everyone: update local `main`
-
-```bash
-git switch main
-git pull --ff-only origin main
-git status
-```
-
-Merging on GitHub does not update anyone's computer automatically.
-
-### Checkpoint
-
-- [ ] The setup PR is merged.
-- [ ] Everyone has updated local `main`.
-- [ ] Everyone can open the starting configuration and records.
-- [ ] Everyone's working directory is clean.
-
-***
-
-## 6. Prepare your individual environment
-
-### 6.1 Create your personal branch
-
-Use your member number:
-
-```bash
-git switch -c testing/member-1
-git branch --show-current
-git status
-```
-
-### 6.2 Create a virtual environment
+Run only the command for your computer.
 
 Windows:
 
@@ -588,27 +149,29 @@ Windows:
 python -m venv .venv
 ```
 
-If only the launcher works:
+If you used the Windows launcher in the previous step:
 
 ```powershell
 py -3 -m venv .venv
 ```
 
-macOS/Linux:
+macOS or Linux:
 
 ```bash
 python3 -m venv .venv
 ```
 
-### 6.3 Activate the environment
+You should now have a `.venv` folder.
 
-Run only the command for your terminal.
+The command may finish without displaying a message.
 
-Git Bash on Windows:
+If Linux reports that virtual-environment support is missing, use your approved software installation process or ask IT support to install it. Do not replace the system Python installation.
 
-```bash
-source .venv/Scripts/activate
-```
+### 2.5 Activate the environment
+
+Look at the terminal name and use the matching command.
+
+Do not run all of them.
 
 Windows PowerShell:
 
@@ -622,226 +185,157 @@ Windows Command Prompt:
 .venv\Scripts\activate.bat
 ```
 
-macOS/Linux:
+Windows Git Bash:
+
+```bash
+source .venv/Scripts/activate
+```
+
+macOS or Linux:
 
 ```bash
 source .venv/bin/activate
 ```
 
-Verify:
+Check which Python you are using:
 
 ```bash
 python -c "import sys; print(sys.executable)"
 ```
 
-The path should point inside this repository's `.venv`.
+The displayed path should contain this project's `.venv` folder.
 
-> [!TIP]
-> If activation is blocked, use an approved alternative terminal or ask your Tutor. You can invoke the interpreter directly: `.\.venv\Scripts\python.exe` on Windows or `./.venv/bin/python` on macOS/Linux. Replace `python` in later commands with that path.
+#### If PowerShell blocks activation
 
-### 6.4 Select the VS Code interpreter
+You do not need to change its security settings.
 
-1. Open the Command Palette: `Ctrl+Shift+P` on Windows/Linux or `Cmd+Shift+P` on macOS.
+In VS Code:
+
+1. Find the dropdown beside the terminal's `+` button.
+2. Open Command Prompt.
+3. Use the Command Prompt activation command above.
+
+Alternatively, run the virtual environment's Python directly.
+
+Replace `python` at the start of later commands with:
+
+- PowerShell: `.\.venv\Scripts\python.exe`
+- macOS or Linux: `./.venv/bin/python`
+
+For example, in PowerShell:
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install pytest-playwright pytest-html
+```
+
+### 2.6 Select Python in VS Code
+
+1. Press Ctrl+Shift+P on Windows/Linux or Cmd+Shift+P on macOS.
 2. Search for `Python: Select Interpreter`.
-3. Select the interpreter inside `.venv`.
+3. Choose the Python inside your project's `.venv` folder.
 
-### 6.5 Install testing packages
+The interpreter is the Python program that runs your code.
+
+### 2.7 Install the testing tools
+
+In the terminal, run these commands one at a time.
+
+Wait for each command to finish.
 
 ```bash
-python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
+python -m pip install pytest-playwright pytest-html
 ```
-
-### 6.6 Install Chromium, Firefox and WebKit
-
-```bash
-python -m playwright install chromium firefox webkit
-```
-
-Or install separately:
 
 ```bash
 python -m playwright install chromium
-python -m playwright install firefox
-python -m playwright install webkit
 ```
 
-These commands install Playwright-managed builds. They do not install Chrome or Edge.
+The first command installs the Python testing packages.
 
-> [!NOTE]
-> Browser downloads require time and disk space. If operating-system support or required system libraries are missing, record the limitation and consult your Tutor. Do not install system packages without authorisation.
+The second downloads the browser used by Playwright. An ordinary Chrome installation does not replace this download.
 
-### 6.7 Verify the tools
+If a download fails, check your internet connection and retry the same command.
 
-```bash
-python --version
-python -m pytest --version
-python -m playwright --version
-python -m pip show pytest-html
-```
+On a managed network, use approved network settings rather than disabling security controls.
 
-### 6.8 Create local output folders
+### 2.8 Create the starting files
 
-Using your editor, create:
+Use VS Code's file explorer to create this structure inside your project:
 
 ```text
-recordings/
-reports/
+automated-testing-practice/
+├── .venv/
+├── pytest.ini
+└── tests/
+    └── test_tasks.py
 ```
 
-These are ignored by Git.
+The `.venv` folder already exists.
 
-### 6.9 Prepare your results document
+Create the `tests` folder and the two files yourself.
 
-In `docs/results/member-1.md`:
+To create a folder or file in VS Code, right-click the project folder in the file explorer and select New Folder or New File.
 
-```markdown
-# Automated tools results — Member 1
+In `pytest.ini`, paste:
 
-## Environment
-
-- Date and time:
-- Operating system:
-- Python version:
-- Playwright version:
-- pytest version:
-
-## Browser availability
-
-| Browser | Available? | Installation or restriction notes |
-| --- | --- | --- |
-| Chromium | | |
-| Playwright Firefox | | |
-| Playwright WebKit | | |
-| Google Chrome | | |
-| Microsoft Edge | | |
-
-## Website exploration
-
-## Recording and replay
-
-## Positive tests
-
-## Data-driven negative tests
-
-## Browser comparison
-
-## Chrome and Edge examples
-
-## Failure investigation
-
-## Self-designed tests
+```ini
+[pytest]
+testpaths = tests
+addopts = -v
 ```
 
-### 6.10 Commit and push
+Save the file.
 
-```bash
-git add docs/results/member-1.md
-git diff --staged
-git commit -m "Record testing environment and browser availability"
-git push -u origin testing/member-1
-```
+This tells pytest where the tests are and asks it to show each test's name.
 
-### Checkpoint
+Leave `test_tasks.py` empty for now.
 
-- [ ] Everyone is on their own branch.
-- [ ] Everyone's interpreter points to `.venv`.
-- [ ] Packages and managed browser installations have been checked.
-- [ ] Chrome and Edge availability is recorded.
-- [ ] Restrictions are documented honestly.
-- [ ] Everyone pushed an environment record.
+---
 
-***
+## 3. Returning to the practical
 
-## 7. Explore, record and replay
+When you reopen the project:
 
-### 7.1 Open the live website
+1. Open the same project folder in VS Code.
+2. Open a terminal.
+3. Activate `.venv` using Section 2.5.
+4. Check the Python path with the command in that section.
+5. Continue with your next activity.
 
-Open [Playwright TodoMVC](https://demo.playwright.dev/todomvc/).
+You do not need to create the environment or download Chromium again unless the environment has been removed or Playwright has been updated.
 
-1. Find the input with the placeholder `What needs to be done?`.
-2. Enter `Read testing notes`.
+---
+
+## 4. Try the website yourself
+
+Open this website in your usual browser:
+
+https://demo.playwright.dev/todomvc/
+
+1. Click the box labelled `What needs to be done?`.
+2. Type `Read testing notes`.
 3. Press Enter.
-4. Confirm that a task appears.
-5. Select its checkbox.
-6. Observe its completed appearance.
-7. Explore All, Active and Completed filters.
+4. Find the task in the list.
+5. Select its checkbox to mark it complete.
+6. Try the All, Active and Completed links.
 
-### 7.2 Inspect the input
+The automated tests will perform similar actions.
 
-In Chrome or Edge:
+Your usual browser and the browser opened by the tests use separate sessions.
 
-1. Right-click the input and select Inspect.
-2. Find the selected input element.
-3. Locate its `placeholder` attribute.
-4. Record its value.
+You do not need to delete the tasks in your usual browser before running the tests.
 
-Also record one usability observation, such as whether completing a task is obvious.
+---
 
-### 7.3 Start Codegen
+## 5. Run your first automated test
 
-Use Chromium for recording:
+### 5.1 Paste the complete code
 
-```bash
-python -m playwright codegen --target python-pytest -o recordings/member_1.py https://demo.playwright.dev/todomvc/
-```
+Open `tests/test_tasks.py`.
 
-Use your own number. You only need to record once; the test can later run in other browsers.
+Paste all of the following code and save it.
 
-### 7.4 Record a scenario
-
-1. Confirm that the recording browser's task list is empty.
-2. Enter `Prepare a testing checklist`.
-3. Press Enter.
-4. Use the text-assertion control to check the new task label.
-5. Stop recording.
-6. Inspect the generated code.
-7. Close the recording windows.
-
-Start a fresh session if needed. Identify the generated navigation, locator, input action, Enter action and assertion.
-
-### 7.5 Replay
-
-```bash
-python -m pytest recordings/member_1.py --browser chromium --headed --slowmo 300
-```
-
-| Option | Purpose |
-| --- | --- |
-| `--browser chromium` | Select Chromium. |
-| `--headed` | Display the browser. |
-| `--slowmo 300` | Slow operations so you can observe them. |
-
-### 7.6 Record what happened
-
-- Which actions were generated?
-- Which locator was selected?
-- Was an assertion included?
-- Did replay behave as expected?
-- What would be missing if the script only clicked and typed?
-
-Commit your observations:
-
-```bash
-git add docs/results/member-1.md
-git diff --staged
-git commit -m "Record browser inspection and recording observations"
-git push
-```
-
-### Checkpoint
-
-- [ ] Everyone inspected the input.
-- [ ] Everyone recorded and replayed a scenario.
-- [ ] Everyone recorded actual outcomes and pushed observations.
-
-***
-
-## 8. Create automated checks
-
-### 8.1 Create your test file
-
-Member 1 creates `tests/test_member_1.py`:
+Keep the spaces at the beginning of the indented lines.
 
 ```python
 from playwright.sync_api import Page, expect
@@ -862,43 +356,82 @@ def test_add_task(page: Page):
 
     expect(task_items).to_have_count(0)
 
-    task_input.fill("Prepare a testing checklist")
+    task_input.fill("Read testing notes")
     task_input.press("Enter")
 
     expect(task_items).to_have_count(1)
 
     expect(task_labels).to_have_text(
-        ["Prepare a testing checklist"]
+        ["Read testing notes"]
     )
 
     expect(task_input).to_have_value("")
 ```
 
-Use your own filename.
+### 5.2 Run the test
 
-### 8.2 Understand the checks
-
-| Code or concept | Purpose |
-| --- | --- |
-| `page.goto(URL)` | Open the website. |
-| `get_by_placeholder(...)` | Identify the input. |
-| `locator(".todo-list li")` | Identify task items. |
-| `.fill(...)` and `.press(...)` | Perform actions. |
-| `to_have_count(...)` | Check the number of tasks. |
-| `to_have_text(...)` | Check task text. |
-| `to_have_value("")` | Check that the input is cleared. |
-
-### 8.3 Run in Chromium
+In the terminal, enter:
 
 ```bash
-python -m pytest tests/test_member_1.py --browser chromium --headed --slowmo 300
+python -m pytest tests/test_tasks.py --browser chromium --headed --slowmo 300
 ```
 
-Record the actual result.
+You should see:
 
-### 8.4 Add a completion test
+1. A browser opens.
+2. The task-list website loads.
+3. A task appears.
+4. The browser closes.
 
-Append:
+The terminal should report `1 passed` if all checks succeed.
+
+Do not type this result yourself. Read what the terminal actually reports.
+
+| Command option | What it does |
+| --- | --- |
+| `--browser chromium` | Selects Chromium. |
+| `--headed` | Makes the browser visible. |
+| `--slowmo 300` | Slows browser actions so you can watch them. |
+
+A browser closing after the test is normal.
+
+If the result differs, use Section 11.
+
+### 5.3 Understand the code
+
+| Code | What it does |
+| --- | --- |
+| `from ... import ...` | Makes Playwright's tools available in the file. |
+| `URL = ...` | Stores the website address. |
+| `def test_add_task(...)` | Defines a test. pytest looks for names beginning with `test_`. |
+| `page` | A browser page supplied by the pytest Playwright package. |
+| `page: Page` | A type hint that helps the editor understand what `page` is. |
+| `page.goto(URL)` | Opens the website. |
+| `get_by_placeholder(...)` | Finds the input by its displayed hint text. |
+| `page.locator(".todo-list li")` | Finds task rows inside the task list. |
+| `task_items.locator("label")` | Finds the task text inside those rows. |
+| `fill(...)` | Replaces the input's text. |
+| `press("Enter")` | Presses the Enter key in the input. |
+| `expect(...)` | Starts a check. |
+| `to_have_count(1)` | Checks that there is exactly one matching item. |
+| `to_have_text([...])` | Checks the displayed task text. |
+| `to_have_value("")` | Checks that the input is empty. |
+
+A locator tells Playwright which part of the page to use.
+
+The expression `.todo-list li` is a CSS selector. In this example, it identifies the task rows. You can reuse it without learning CSS selectors first.
+
+In `to_have_text(["Read testing notes"])`, the square brackets contain a list of expected task labels.
+
+Playwright's checks wait briefly for the expected page condition. You do not need to add your own pauses between these steps.
+
+---
+
+## 6. Check task completion
+
+Add this code below the first test in the same file.
+
+Do not replace the existing code.
 
 ```python
 def test_complete_task(page: Page):
@@ -913,14 +446,12 @@ def test_complete_task(page: Page):
 
     expect(task_items).to_have_count(0)
 
-    task_input.fill("Review practical instructions")
+    task_input.fill("Practise automated testing")
     task_input.press("Enter")
 
     expect(task_items).to_have_count(1)
 
-    task = task_items.first
-    checkbox = task.get_by_role("checkbox")
-
+    checkbox = task_items.first.get_by_role("checkbox")
     checkbox.check()
 
     expect(checkbox).to_be_checked()
@@ -934,104 +465,65 @@ def test_complete_task(page: Page):
     expect(task_items).to_have_count(1)
 
     expect(task_items.locator("label")).to_have_text(
-        ["Review practical instructions"]
+        ["Practise automated testing"]
     )
 ```
 
-Each test creates its own task. The plugin provides a fresh browser context and page for each test using `page`.
-
-### 8.5 Run both tests
+Save and run:
 
 ```bash
-python -m pytest tests/test_member_1.py --browser chromium --headed
+python -m pytest tests/test_tasks.py --browser chromium --headed
 ```
 
-Expected number in your file: two tests. Record the actual result.
+If both tests succeed, the summary reports `2 passed`.
 
-### 8.6 Generate an HTML report
+### What the new code does
 
-```bash
-python -m pytest tests/test_member_1.py --browser chromium --html=reports/member-1-chromium-positive.html --self-contained-html
-```
+- `first` selects the first task row.
+- `get_by_role("checkbox")` finds its checkbox.
+- `check()` selects the checkbox.
+- `to_be_checked()` checks that it is selected.
+- Clicking Completed shows completed tasks.
+- The final checks confirm that the completed task appears.
 
-Open the report. Find test names, outcomes, durations and any errors.
+Each test receives a fresh browser session.
 
-### 8.7 Use a readable results block
-
-```markdown
-### Test ID: AUTO-1-01
-
-| Item | Details |
-| --- | --- |
-| Type | Positive |
-| Source | `tests/test_member_1.py` |
-| Browser | Chromium |
-| Status | Not run |
-
-#### Purpose
-
-Check that adding a task displays the correct text.
-
-#### Expected result
-
-One task appears, its text matches and the input is cleared.
-
-#### Execution command
-
-Record the command used.
-
-#### Actual result
-
-Not recorded — test has not been executed.
-
-#### Evidence
-
-Not captured.
+The second test creates its own task rather than using a task left by the first test.
 
 ---
-```
 
-Update after execution. Use Pass, Fail, Blocked or Not run.
+## 7. Try several inputs with one test
 
-### 8.8 Commit and push
+A valid task name should create a task.
 
-```bash
-git add tests/test_member_1.py docs/results/member-1.md
-git diff --staged
-git commit -m "Add and run task creation and completion checks"
-git push
-```
+An empty or spaces-only entry should not create one.
 
-### Checkpoint
+A test of invalid input is often called a negative test. It passes when the website handles the invalid input as expected.
 
-- [ ] Everyone has two guided tests.
-- [ ] Actual outcomes are recorded.
-- [ ] Everyone inspected an HTML report.
-- [ ] Source and records are committed and pushed.
+“Negative” does not mean the test must fail.
 
-***
+### 7.1 Add an import
 
-## 9. Run data-driven tests and compare browsers
-
-### 9.1 State the expected behaviour
-
-For this exercise:
-
-> Submitting an empty or whitespace-only task should not create a task.
-
-These negative tests pass when the invalid task is not added.
-
-### 9.2 Add the import
-
-At the top of your test file:
+At the very top of `tests/test_tasks.py`, add:
 
 ```python
 import pytest
 ```
 
-Keep existing imports and tests.
+Keep the existing import, URL and tests.
 
-### 9.3 Add the parameterized test
+The top of your file should now look like this:
+
+```python
+import pytest
+from playwright.sync_api import Page, expect
+
+URL = "https://demo.playwright.dev/todomvc/"
+```
+
+### 7.2 Add the new test
+
+At the bottom of the same file, paste:
 
 ```python
 @pytest.mark.parametrize(
@@ -1057,346 +549,169 @@ def test_blank_task_is_not_added(page: Page, task_text: str):
     expect(task_items).to_have_count(0)
 ```
 
-### 9.4 Predict the count
+The line beginning with `@` tells pytest to run the function once for each supplied input.
 
-Your file contains one add-task test, one completion test and three blank-input cases.
+This is called parametrization.
 
-Expected total per browser: five tests.
-
-### 9.5 Run in Chromium
-
-```bash
-python -m pytest tests/test_member_1.py --browser chromium --headed --html=reports/member-1-chromium.html --self-contained-html
-```
-
-### 9.6 Run in Firefox
-
-```bash
-python -m pytest tests/test_member_1.py --browser firefox --headed --html=reports/member-1-firefox.html --self-contained-html
-```
-
-This selects Playwright's Firefox build.
-
-### 9.7 Run in WebKit
-
-```bash
-python -m pytest tests/test_member_1.py --browser webkit --headed --html=reports/member-1-webkit.html --self-contained-html
-```
-
-Record this as Playwright WebKit, not Safari.
-
-### 9.8 Run in Google Chrome
-
-#### Run the existing pytest tests
-
-Ensure stable Chrome is installed:
-
-```bash
-python -m pytest tests/test_member_1.py --browser chromium --browser-channel chrome --headed --html=reports/member-1-chrome.html --self-contained-html
-```
-
-The test file is unchanged. The channel selects the installed browser.
-
-#### See Chrome selection directly in Python
-
-Create `examples/member_1_chrome.py`:
-
-```python
-from playwright.sync_api import sync_playwright, expect
-
-URL = "https://demo.playwright.dev/todomvc/"
-
-
-def main():
-    with sync_playwright() as playwright:
-        browser = playwright.chromium.launch(
-            channel="chrome",
-            headless=False,
-            slow_mo=300,
-        )
-
-        try:
-            context = browser.new_context()
-
-            try:
-                page = context.new_page()
-                page.goto(URL)
-
-                task_input = page.get_by_placeholder(
-                    "What needs to be done?",
-                    exact=True,
-                )
-
-                task_items = page.locator(".todo-list li")
-
-                expect(task_items).to_have_count(0)
-
-                task_input.fill("Test a task in Google Chrome")
-                task_input.press("Enter")
-
-                expect(task_items).to_have_count(1)
-
-                expect(task_items.locator("label")).to_have_text(
-                    ["Test a task in Google Chrome"]
-                )
-
-                expect(task_input).to_have_value("")
-
-                print("PASS: Google Chrome displayed the expected task.")
-
-            finally:
-                context.close()
-
-        finally:
-            browser.close()
-
-
-if __name__ == "__main__":
-    main()
-```
-
-Run:
-
-```bash
-python examples/member_1_chrome.py
-```
-
-Expected behaviour:
-
-1. Chrome opens in a separate browser session.
-2. The website loads.
-3. A task is entered.
-4. Assertions check the task count, task text and cleared input.
-5. A passing message appears if all assertions succeed.
-6. The browser closes.
-
-If a check fails, Python displays an error instead of the passing message. Record the actual result.
-
-### 9.9 Run in Microsoft Edge
-
-#### Run the existing pytest tests
-
-Ensure stable Edge is installed:
-
-```bash
-python -m pytest tests/test_member_1.py --browser chromium --browser-channel msedge --headed --html=reports/member-1-edge.html --self-contained-html
-```
-
-#### See Edge selection directly in Python
-
-Create `examples/member_1_edge.py`:
-
-```python
-from playwright.sync_api import sync_playwright, expect
-
-URL = "https://demo.playwright.dev/todomvc/"
-
-
-def main():
-    with sync_playwright() as playwright:
-        browser = playwright.chromium.launch(
-            channel="msedge",
-            headless=False,
-            slow_mo=300,
-        )
-
-        try:
-            context = browser.new_context()
-
-            try:
-                page = context.new_page()
-                page.goto(URL)
-
-                task_input = page.get_by_placeholder(
-                    "What needs to be done?",
-                    exact=True,
-                )
-
-                task_items = page.locator(".todo-list li")
-
-                expect(task_items).to_have_count(0)
-
-                task_input.fill("Test a task in Microsoft Edge")
-                task_input.press("Enter")
-
-                expect(task_items).to_have_count(1)
-
-                expect(task_items.locator("label")).to_have_text(
-                    ["Test a task in Microsoft Edge"]
-                )
-
-                expect(task_input).to_have_value("")
-
-                print("PASS: Microsoft Edge displayed the expected task.")
-
-            finally:
-                context.close()
-
-        finally:
-            browser.close()
-
-
-if __name__ == "__main__":
-    main()
-```
-
-Run:
-
-```bash
-python examples/member_1_edge.py
-```
-
-Expected behaviour matches the Chrome demonstration, but Microsoft Edge is selected. Record what actually happened.
-
-#### Understand the launch code
-
-| Code | Meaning |
+| Part | Meaning |
 | --- | --- |
-| `sync_playwright()` | Start Playwright's synchronous Python interface. |
-| `playwright.chromium.launch(...)` | Launch a Chromium-family browser. |
-| `channel="chrome"` | Select installed Google Chrome. |
-| `channel="msedge"` | Select installed Microsoft Edge. |
-| `headless=False` | Make the browser visible. |
-| `slow_mo=300` | Slow operations so you can observe them. |
-| `browser.new_context()` | Create an isolated browser session. |
-| `context.new_page()` | Open a page in that session. |
-| `finally` | Close resources even if a check fails. |
+| `""` | An empty string: no characters. |
+| `" "` | A string containing one space. |
+| `"   "` | A string containing three spaces. |
+| `task_text` | Receives the input for the current run. |
+| `ids` | Gives each run a readable name. |
 
-> [!IMPORTANT]
-> These standalone scripts demonstrate explicit browser launching. They do not connect to your everyday signed-in browser profile.
->
-> Continue using pytest for the guided reports, screenshots and traces. Plugin options do not automatically configure browsers launched manually by standalone scripts.
->
-> The scripts in `examples/` do not change the five-test count in your guided pytest file.
+### 7.3 Run the tests
 
-Record standalone executions using:
-
-```markdown
-### Chrome or Edge standalone example
-
-#### Source
-
-Record the file used.
-
-#### Command
-
-Record the command used.
-
-#### Expected result
-
-One task appears with the expected text and the input is cleared.
-
-#### Actual result
-
-Record what happened.
-
-#### Status
-
-Pass / Fail / Blocked / Not run
-
-#### Notes
-
-Record installation, policy or execution issues.
-```
-
-Stage only the example files you created:
+Save and run:
 
 ```bash
-git add examples/member_1_chrome.py examples/member_1_edge.py
-git add docs/results/member-1.md
-git diff --staged
-git commit -m "Add Chrome and Edge browser automation examples"
-git push
+python -m pytest tests/test_tasks.py --browser chromium --headed
 ```
 
-If you created one example only, stage that file only. Use your actual member number.
+Your file now runs:
 
-### 9.10 Run three managed browsers together
+- One add-task test.
+- One completion test.
+- Three blank-input cases.
 
-After understanding individual commands:
+That produces five test runs.
 
-```bash
-python -m pytest tests/test_member_1.py --browser chromium --browser firefox --browser webkit --html=reports/member-1-three-browsers.html --self-contained-html
-```
+If they all succeed, the summary reports `5 passed`.
 
-For the five guided cases:
+These introductory checks do not prove that every possible invalid input is handled correctly.
+
+---
+
+## 8. Record browser actions
+
+Codegen can help you create starting code.
+
+You still need to read the code and decide what results it should check.
+
+### 8.1 Create a recording folder
+
+In VS Code, create a folder named `recordings` beside `tests`.
+
+Your project now includes:
 
 ```text
-5 cases × 3 browsers = 15 executions
+automated-testing-practice/
+├── .venv/
+├── pytest.ini
+├── recordings/
+└── tests/
+    └── test_tasks.py
 ```
 
-Run Chrome and Edge separately using their channel commands.
+### 8.2 Start the recorder
 
-> [!IMPORTANT]
-> Do not combine Chrome or Edge channels with Firefox or WebKit selections. Use channel options only with Chromium in this practical.
+In the terminal, run:
 
-### 9.11 Allocate browser comparisons
-
-Everyone runs the guided tests in Chromium. Divide additional comparison work:
-
-| Member | Suggested browser |
-| --- | --- |
-| 1 | Chromium |
-| 2 | Firefox |
-| 3 | WebKit |
-| 4 | Google Chrome |
-| 5 | Microsoft Edge |
-
-For four members, Member 4 also checks Edge if available. Members may try every available browser, but do not repeat full runs unnecessarily.
-
-Document unavailable browsers rather than reporting them as tested.
-
-### 9.12 Record comparisons
-
-Use a block for each browser you personally executed:
-
-```markdown
-### Browser comparison — Firefox
-
-- Command:
-- Executed by:
-- Actual outcome:
-- Observations:
-- Report filename:
+```bash
+python -m playwright codegen --target python-pytest -o recordings/recorded_task.py https://demo.playwright.dev/todomvc/
 ```
 
-For another member's result, link to their record and identify them. Do not claim the execution.
+A browser and recording controls should open.
 
-Compare final task behaviour, displayed text, checkbox state, filters and errors. Do not use these small functional runs as a browser-speed benchmark.
+1. In the recording browser, enter `Try the recorder` in the task input.
+2. Press Enter.
+3. Look for the text assertion control in the recording toolbar.
+4. Hover over controls to read their labels.
+5. Select the text assertion control, then select the new task's text.
+6. Inspect the generated code for an `expect(...)` check.
+7. Close the recording windows to finish.
 
-### 9.13 Commit and push
+If you cannot find the assertion control, you can still replay the recorded actions.
 
-Suggested message:
-
-```text
-Add data-driven tests and browser comparison results
-```
-
-### Checkpoint
-
-- [ ] Everyone ran the five guided cases in Chromium.
-- [ ] The group attempted all browser options where available.
-- [ ] Chrome and Edge examples were explored by assigned members or recorded for later practice.
-- [ ] Browsers and restrictions are identified accurately.
-- [ ] Results and observations are committed.
-
-***
-
-## 10. Investigate a failed test
-
-You will deliberately introduce an incorrect expectation. This demonstrates diagnostics, not a website defect.
-
-### 10.1 Change one expectation
-
-In `test_add_task()`, temporarily replace:
+To add a check yourself, open `recordings/recorded_task.py`. Inside its test function, after the recorded action that presses Enter, add:
 
 ```python
-expect(task_labels).to_have_text(
-    ["Prepare a testing checklist"]
+expect(page.locator(".todo-list li label")).to_have_text(
+    ["Try the recorder"]
 )
 ```
 
-with:
+Keep the same indentation as the other lines inside that function.
+
+The file also needs this import at the top:
+
+```python
+from playwright.sync_api import expect
+```
+
+If `expect` is already included in an existing import, do not add it again.
+
+### 8.3 Replay the recording
+
+Save the file and run:
+
+```bash
+python -m pytest recordings/recorded_task.py --browser chromium --headed --slowmo 300
+```
+
+This command explicitly selects the recording file.
+
+It does not add the recording to the five cases in `tests/test_tasks.py`.
+
+If the recording has only actions, it may run successfully without checking that the correct task appeared.
+
+Successful actions and a meaningful check are not the same thing.
+
+---
+
+## 9. Open a results report
+
+Create a folder named `reports` beside `tests`.
+
+Then run:
+
+```bash
+python -m pytest tests/test_tasks.py --browser chromium --html=reports/results.html --self-contained-html
+```
+
+This command does not show the browser because it leaves out `--headed`.
+
+The tests still run.
+
+Find `reports/results.html` in your project folder.
+
+Open it in your usual browser. For example, locate it in File Explorer or Finder and double-click it.
+
+The report shows:
+
+- Test names.
+- Results.
+- Time taken.
+- Error details for failed tests.
+
+Expand a failed result to read its details.
+
+A report summarises a run. It does not guarantee that the tests cover everything the website can do.
+
+You do not need to write a separate report or submit this file.
+
+---
+
+## 10. Understand a failed check
+
+A failed test is information to investigate.
+
+It does not automatically mean the website is broken.
+
+In this activity, you will deliberately give one check the wrong expected text.
+
+### 10.1 Change only one check
+
+In `test_add_task()`, find:
+
+```python
+expect(task_labels).to_have_text(
+    ["Read testing notes"]
+)
+```
+
+Temporarily change it to:
 
 ```python
 expect(task_labels).to_have_text(
@@ -1404,863 +719,378 @@ expect(task_labels).to_have_text(
 )
 ```
 
-Do not change the input text.
+Do not change:
 
-### 10.2 Predict the failure
-
-Record the entered text, expected text and why the comparison should fail.
-
-### 10.3 Run with diagnostic options
-
-```bash
-python -m pytest tests/test_member_1.py -k test_add_task --browser chromium --headed --screenshot only-on-failure --tracing retain-on-failure --output test-results/member-1-chromium-failure --html=reports/member-1-chromium-failure.html --self-contained-html
+```python
+task_input.fill("Read testing notes")
 ```
 
-| Option | Purpose |
+### 10.2 Run just this test
+
+Save, then run:
+
+```bash
+python -m pytest tests/test_tasks.py::test_add_task --browser chromium --headed --screenshot only-on-failure --tracing retain-on-failure --output test-results/failure-demo
+```
+
+The `::test_add_task` part selects that one function.
+
+The other options save information to help you investigate:
+
+| Option | What it does |
 | --- | --- |
-| `-k test_add_task` | Select tests matching that name. |
-| `--screenshot only-on-failure` | Save a failure screenshot. |
-| `--tracing retain-on-failure` | Retain a failed test's trace. |
-| `--output ...` | Choose the artifact directory. |
-| `--html=...` | Generate the report. |
+| `--screenshot only-on-failure` | Saves a screenshot when the test fails. |
+| `--tracing retain-on-failure` | Keeps a trace when the test fails. |
+| `--output test-results/failure-demo` | Chooses where to save these files. |
 
-### 10.4 Inspect report and screenshot
+This run should fail.
 
-Open `reports/member-1-chromium-failure.html`. Find the failed test, assertion line, expected text and actual text.
+The test enters `Read testing notes`, but its check expects `A different task`.
 
-Open the generated test subfolder under `test-results/member-1-chromium-failure/` and inspect its screenshot.
+Read the terminal error. Find the expected text and the actual text.
 
-Does the page show the task the script actually entered?
+Here, the problem is the deliberately incorrect test expectation. This is not a demonstrated website defect.
 
-### 10.5 Open the trace
+### 10.3 Open the screenshot
 
-Find `trace.zip`. Replace the placeholder with its actual path:
+In VS Code's file explorer:
 
-```bash
-python -m playwright show-trace "PATH_TO_TRACE_ZIP"
-```
+1. Open `test-results`.
+2. Open `failure-demo`.
+3. Open the generated test subfolder.
+4. Find and open the screenshot.
 
-Inspect navigation, the input action, Enter, page snapshots and the failed assertion.
+The exact subfolder name is generated automatically.
 
-### 10.6 Preserve selected evidence
+Use the file explorer rather than guessing it.
 
-Copy useful screenshots into `docs/evidence/member-1/`, for example:
+The screenshot shows the page at failure. It helps you see what happened, but it does not replace reading the failed assertion.
 
-```text
-chromium-failure-report.png
-chromium-failure-page.png
-```
+### 10.4 Open the trace
 
-From the results file:
+In the same test subfolder, find `trace.zip`.
 
-```markdown
-[View failure page](../evidence/member-1/chromium-failure-page.png)
-```
+In VS Code:
 
-Copy selected evidence before rerunning because generated output can be replaced. Do not commit the entire artifact directory.
+1. Right-click `trace.zip`.
+2. Select Copy Relative Path.
+3. Use that path in the following command.
 
-### 10.7 Record the investigation
-
-```markdown
-## Failure investigation
-
-### Browser used
-
-### Deliberate change
-
-### Predicted outcome
-
-### Actual outcome
-
-### Screenshot observation
-
-### Trace observation
-
-### Cause
-
-### Correction and rerun
-```
-
-Explain why this is a test expectation error rather than a website defect.
-
-### 10.8 Restore and rerun
-
-Restore the original expected text:
+Replace `PASTE_RELATIVE_PATH_HERE` with the copied path. Keep the quotation marks.
 
 ```bash
-python -m pytest tests/test_member_1.py --browser chromium --html=reports/member-1-chromium-corrected.html --self-contained-html
+python -m playwright show-trace "PASTE_RELATIVE_PATH_HERE"
 ```
 
-Record the actual outcome.
+In Trace Viewer, select actions in order.
 
-> [!IMPORTANT]
-> Do not remove the assertion or skip the test to obtain a pass. Restore the meaningful expectation. Do not leave the deliberately incorrect assertion in the shared suite.
+Look at:
 
-### 10.9 Commit and push
+- The page opening.
+- The text being entered.
+- The Enter key being pressed.
+- The failed check.
+
+A trace lets you look back through the test.
+
+You do not need to save screenshots of the viewer or write answers to questions.
+
+### 10.5 Restore the correct check
+
+Change the expected text back to:
+
+```python
+expect(task_labels).to_have_text(
+    ["Read testing notes"]
+)
+```
+
+Save and run the full test file again:
 
 ```bash
-git add tests/test_member_1.py docs/results/member-1.md docs/evidence/member-1/
-git diff --staged
-git commit -m "Document browser failure investigation"
-git push
+python -m pytest tests/test_tasks.py --browser chromium
 ```
 
-Review images directly; a text diff does not display their visual contents.
+If all checks succeed, the summary reports `5 passed` again.
 
-### Checkpoint
+Do not remove the assertion simply to make the failure disappear.
 
-- [ ] Everyone observed the deliberate failure.
-- [ ] Everyone inspected the report, screenshot and trace.
-- [ ] Everyone restored the correct assertion and recorded the rerun.
-- [ ] Records and selected evidence are pushed.
+Restore the check that matches the intended behaviour.
 
-***
+Generated screenshots and traces may be replaced by later runs using the same output location. Copy a file elsewhere first only if you want to keep it for your own reference.
 
-## 11. Create your own tests
+---
 
-Each member chooses additional behaviour. There is no prescribed scenario list or fixed test count.
+## 11. Solve common problems
 
-### 11.1 Choose a question
+Start with these checks:
 
-Possible starting points:
+1. Save the file you changed.
+2. Make sure VS Code has opened `automated-testing-practice`, not only its `tests` subfolder.
+3. Make sure the terminal is in that project folder.
+4. Check that Python comes from `.venv`.
+5. Read the first useful error message before rerunning.
 
-- Can a task be edited or deleted?
-- Does Active exclude completed tasks?
-- Does All show active and completed tasks?
-- What happens with duplicate task names?
-- Does refreshing preserve tasks within the same context?
-- What happens to leading or trailing spaces?
-
-These are prompts, not compulsory tasks.
-
-### 11.2 Agree the allocation
-
-In `docs/team-plan.md`:
-
-```markdown
-### Member 1 — Open-ended testing
-
-- Chosen area:
-- Question:
-- Browser or browsers:
-```
-
-### 11.3 Plan before coding
-
-In your own results file:
-
-```markdown
-## Self-designed tests
-
-### Testing idea
-
-### Reason
-
-### Test basis
-
-### Starting state
-
-### Planned actions
-
-1.
-2.
-3.
-
-### Assertions
-
-### Browser selection
-```
-
-### 11.4 Use the tools
-
-Explore manually, inspect elements, use Codegen's locator picker, adapt earlier patterns and inspect diagnostic artifacts.
-
-Start each test from a known state. Include setup within the test; do not rely on another test's tasks.
-
-Commit the plan and initial code:
-
-```text
-Add self-designed browser test
-```
-
-### 11.5 Execute and adapt
-
-1. Run your file.
-2. Compare actual and expected behaviour.
-3. Investigate unexpected outcomes.
-4. Try a second browser if useful.
-5. Add follow-up cases if appropriate.
-6. Record what you learned.
-
-If the expectation is unclear, state the assumption or question. Do not claim a confirmed defect based only on preference. Use `Observation only` when no clear pass/fail basis exists. Leave unexecuted work marked Not run.
-
-### 11.6 Commit the results
-
-Suggested message:
-
-```text
-Record self-designed browser testing results
-```
-
-### Checkpoint
-
-- [ ] Every member chose a question and executed additional tests.
-- [ ] Browser selection is recorded.
-- [ ] Assumptions, actual outcomes and remaining questions are documented.
-- [ ] Contributions are committed and pushed.
-
-***
-
-## 12. Combine contributions and reflect
-
-### 12.1 Complete your reflection
-
-In your own file under `docs/reflections/`, answer:
-
-- What did Codegen do, and what did you still decide?
-- How do actions differ from assertions?
-- Why can a negative test pass?
-- How did parametrization reduce repetition?
-- What changed when you selected another browser?
-- Why is Playwright WebKit not installed Safari?
-- How do standalone scripts differ from pytest execution?
-- How did screenshots and traces help?
-- What can these checks not determine?
-- How does your Git history show your progress?
-
-Commit and push the reflection.
-
-### 12.2 Create your PR
-
-```text
-base: main
-compare: your personal work branch
-```
-
-Suggested title:
-
-```text
-Add Member 1 automated testing tools practical
-```
-
-Description:
-
-```markdown
-## What changed?
-
-- Recording and replay:
-- Guided checks:
-- Data-driven tests:
-- Browser comparisons:
-- Chrome or Edge examples:
-- Failure investigation:
-- Self-designed tests:
-
-## What did I execute?
-
-- Commands:
-- Browsers:
-- Actual outcomes:
-- Known limitations:
-
-## Supporting records
-
-- Results:
-- Reflection:
-- Selected evidence:
-```
-
-### 12.3 Merge one contribution at a time
-
-Formal peer approval and reproduction are not required. Before merging, inspect Files changed and confirm:
-
-- Files are in intended locations.
-- No other member's work is overwritten.
-- No deliberately incorrect assertion remains.
-- Evidence links work.
-- No sensitive information is included.
-- Environments and generated reports are not committed.
-
-Use Create a merge commit if available to preserve individual commits.
-
-### 12.4 Everyone: update local `main`
-
-Start with no uncommitted changes:
+This command displays your current folder and Python location:
 
 ```bash
-git switch main
-git pull --ff-only origin main
-git status
+python -c "from pathlib import Path; import sys; print('Folder:', Path.cwd()); print('Python:', sys.executable)"
 ```
 
-### 12.5 Coordinator: prepare the summary
+| What you see | What to try |
+| --- | --- |
+| `python` is not recognised | Reopen the terminal. On Windows, try `py -3 --version`. Follow Section 2 again if Python is missing. |
+| `No module named pytest` or `playwright` | Check the Python path. Activate `.venv`, then repeat the package installation command in Section 2.7. |
+| Browser executable is missing | Run `python -m playwright install chromium`. |
+| PowerShell blocks activation | Use Command Prompt or the direct Python path in Section 2.5. Do not weaken security settings. |
+| `no tests ran` | Check that the file is saved as `tests/test_tasks.py`, not `test_tasks.py.txt`. Test function names must start with `test_`. |
+| File or folder not found | Check the project folder, spelling and selected path. Create the folder if the guide asks for it. |
+| `IndentationError` | Compare the leading spaces with the example. Use four spaces inside a test function. Do not mix tabs and spaces. |
+| `SyntaxError` | Check quotation marks, brackets and colons. Copy plain code without the surrounding Markdown backticks. |
+| Browser opens and closes quickly | This is normal after a run. Add `--headed --slowmo 300` to watch actions, then read the terminal result. |
+| A check reports different text | Compare the entered text with the expected text, including spelling, capital letters and spaces. |
+| The page cannot load | Open the demo URL in your usual browser. Check the connection. If the site is unavailable, save your work and retry later. |
+| A locator times out | Check that the site loaded and the locator text matches the page. Use the recorder or browser Inspect tool to examine the current page. |
+| A report has no screenshot | The HTML report and Playwright screenshots are separate outputs in this guide. Open the screenshot under `test-results`. |
+| A download or browser is blocked by policy | Use the approved software or network process. Do not bypass the restriction. Other optional browsers can wait. |
+| Linux reports missing browser libraries | Use an approved supported environment or ask IT support to install the required system dependencies. |
+
+### If Playwright was upgraded
+
+Download its matching Chromium build again:
 
 ```bash
-git switch -c docs/group-summary
+python -m playwright install chromium
 ```
 
-Complete `docs/summary.md`:
+### If a problem remains
 
-```markdown
-# Group summary
+Keep your files and the full error message.
 
-## Tools experienced
+Do not delete your project as a first troubleshooting step.
 
-- Browser Developer Tools:
-- Codegen:
-- Playwright:
-- pytest:
-- HTML report:
-- Trace Viewer:
+If one optional activity is blocked, you can leave it and continue with activities that use your working setup.
 
-## Browser coverage
+---
 
-### Chromium
-- Tester:
-- Result record:
-- Main observation:
+## 12. Optional: try another browser
+
+You can stop after the main activities.
+
+Try this section only when you are comfortable running your existing tests.
+
+You do not need all browsers installed. Choose one available option.
 
 ### Firefox
-- Tester:
-- Result record:
-- Main observation:
+
+Install Playwright's Firefox build:
+
+```bash
+python -m playwright install firefox
+```
+
+Run the same tests:
+
+```bash
+python -m pytest tests/test_tasks.py --browser firefox --headed
+```
+
+An ordinary Firefox installation does not replace Playwright's supported build.
 
 ### WebKit
-- Tester:
-- Result record:
-- Main observation:
 
-### Google Chrome
-- Tester:
-- Result record:
-- Main observation:
-
-### Microsoft Edge
-- Tester:
-- Result record:
-- Main observation:
-
-## Member 1
-
-- Tests: [View source](../tests/test_member_1.py)
-- Results: [View record](results/member-1.md)
-- Reflection: [View reflection](reflections/member-1.md)
-- Standalone examples, if completed:
-- Self-designed investigation:
-- Main observation:
-- Pull request:
-
-## Member 2
-
-Repeat for every member.
-
-## Group conclusion
-
-- What did automation make easier?
-- What setup or maintenance was needed?
-- Which browser differences were observed?
-- Which observations required human judgement?
-- What would the group explore next?
-```
-
-Run the integrated pytest suite once in Chromium:
+Install Playwright's WebKit build:
 
 ```bash
-python -m pytest --browser chromium --html=reports/group-final-chromium.html --self-contained-html
+python -m playwright install webkit
 ```
 
-Record the actual result. Standalone scripts under `examples/` are not part of this pytest run.
-
-Repeated guided tests demonstrate individual participation, not additional unique functional coverage. Do not repeatedly run the full suite across all browsers without a reason.
-
-Commit and merge the summary through a PR. Everyone updates local `main` again.
-
-### 12.6 Inspect Git history
+Run:
 
 ```bash
-git log --oneline --graph --decorate --all -20
+python -m pytest tests/test_tasks.py --browser webkit --headed
 ```
 
-Inspect a commit using its actual ID:
+WebKit here is Playwright's browser build.
+
+This is not a test in the installed Safari application.
+
+If system dependencies are unavailable, skip this option rather than changing system settings without permission.
+
+### Installed Google Chrome
+
+If stable Google Chrome is already installed:
 
 ```bash
-git show COMMIT_ID
+python -m pytest tests/test_tasks.py --browser chromium --browser-channel chrome --headed
 ```
 
-Explain what changed and how you know.
+### Installed Microsoft Edge
 
-### Final practical checkpoint
-
-- [ ] Contributions and the summary are merged.
-- [ ] Browser coverage and restrictions are documented.
-- [ ] Everyone updated local `main`.
-- [ ] Everyone can explain a commit.
-- [ ] Actual outcomes are recorded honestly.
-- [ ] No deliberately incorrect assertion remains.
-
-***
-
-## 13. Troubleshooting and command reference
-
-### Before attempting a fix
-
-1. Read the error message.
-2. Confirm the intended command.
-3. Check the folder, branch and Python interpreter.
-4. Confirm the selected browser or channel.
-5. Preserve your work.
-6. Ask your Tutor if the state is unclear.
+If stable Microsoft Edge is already installed:
 
 ```bash
-git status
-git branch --show-current
-python -c "import sys; print(sys.executable)"
+python -m pytest tests/test_tasks.py --browser chromium --browser-channel msedge --headed
 ```
 
-### Common problems
+The channel selects an installed Chrome or Edge browser.
 
-| Problem | What to check first |
-| --- | --- |
-| Python is not recognised | Reopen the terminal; try the appropriate launcher. |
-| Packages cannot be imported | Confirm the interpreter points to `.venv`. |
-| Activation is blocked | Use an approved terminal or invoke the environment interpreter directly. |
-| Chromium is missing | Run `python -m playwright install chromium`. |
-| Firefox is missing | Run `python -m playwright install firefox`. |
-| WebKit is missing | Run `python -m playwright install webkit`. |
-| Chrome cannot be found | Check stable Chrome is installed in its normal location. |
-| Edge cannot be found | Check stable Edge is installed in its normal location. |
-| WebKit reports missing libraries | Ask your Tutor about supported systems and approved dependencies. |
-| Chrome or Edge is blocked by policy | Document it; do not bypass the restriction. |
-| Standalone script has no pytest report | It is run with `python`, not pytest; use guided tests for reports. |
-| Browser closes after a standalone example | Expected: cleanup closes it when the script finishes or a check fails. |
-| No tests are found | Check saved files, `test_` names and selected path. |
-| Browser is not visible | Use `--headed` in pytest or `headless=False` in standalone code. |
-| Locator does not match | Inspect the current page with Codegen or Developer Tools. |
-| HTML report has no screenshot | Open Playwright artifacts separately. |
-| Evidence disappeared | Copy selected artifacts before rerunning. |
-| Evidence link is broken | Check path, case and whether the file was committed and pushed. |
-| Too many files appear in Git | Check `.gitignore`. |
-| Push is rejected | Check authentication, permissions and remote changes; do not force-push. |
-| Sensitive data was committed | Stop sharing and inform your Tutor; deletion alone does not remove history. |
+Use these channels only with `--browser chromium`, not with Firefox or WebKit.
 
-### Channel and engine mismatch
+The Python tests stay the same. Only the run command changes.
 
-Use Chrome or Edge channels with Chromium:
+Compare whether the checks produce the same outcomes.
 
-```bash
-python -m pytest tests/test_member_1.py --browser chromium --browser-channel chrome
-python -m pytest tests/test_member_1.py --browser chromium --browser-channel msedge
-```
+These small runs are not browser-speed benchmarks.
 
-Do not attach those channels to Firefox or WebKit.
+---
 
-### Playwright was upgraded
+## 13. Optional: make one small change
 
-Reinstall required managed browsers:
+These are practice ideas, not assessment tasks.
 
-```bash
-python -m playwright install chromium firefox webkit
-```
+There is no required number to complete.
 
-Browser binaries must match the installed Playwright version.
+### Change the task name
 
-### `git pull --ff-only` refuses
+In `test_add_task()`, change `Read testing notes` to another fictional task name in both places:
 
-Inspect before changing anything:
+1. The input action.
+2. The text assertion.
 
-```bash
-git status
-git branch --show-current
-git fetch origin
-git log --oneline --graph --decorate --all -15
-```
+Save and rerun.
 
-If you accidentally committed on local `main`, preserve those commits:
+### Add another blank-input case
 
-```bash
-git switch -c recovery/my-main-work
-```
+In the parametrized test:
 
-Ask your Tutor how to integrate safely. Do not reset or force-push to bypass the problem.
+1. Add a string containing four spaces to the input list.
+2. Add `"four-spaces"` to `ids`.
 
-### Browser command reference
+Keep one ID for each input.
 
-| Browser | Command |
-| --- | --- |
-| Chromium | `python -m pytest tests/test_member_1.py --browser chromium --headed` |
-| Firefox | `python -m pytest tests/test_member_1.py --browser firefox --headed` |
-| WebKit | `python -m pytest tests/test_member_1.py --browser webkit --headed` |
-| Chrome | `python -m pytest tests/test_member_1.py --browser chromium --browser-channel chrome --headed` |
-| Edge | `python -m pytest tests/test_member_1.py --browser chromium --browser-channel msedge --headed` |
-
-### Other testing commands
-
-| Command | Purpose |
-| --- | --- |
-| `python -m pip install -r requirements.txt` | Install packages. |
-| `python -m playwright install chromium firefox webkit` | Install managed browsers. |
-| `python -m playwright codegen URL` | Open the recorder. |
-| `python -m pytest tests/test_member_1.py -k test_add_task` | Select a named test. |
-| `python -m playwright show-trace "PATH_TO_TRACE_ZIP"` | Open a trace. |
-| `python examples/member_1_chrome.py` | Run the standalone Chrome example. |
-| `python examples/member_1_edge.py` | Run the standalone Edge example. |
-
-### Git commands
-
-| Command | Purpose |
-| --- | --- |
-| `git status` | Inspect branch and working state. |
-| `git branch --show-current` | Display the current branch. |
-| `git diff` | Inspect unstaged changes to tracked files. |
-| `git add FILE` | Select changes for a commit. |
-| `git diff --staged` | Inspect selected changes. |
-| `git commit -m "Message"` | Record selected changes locally. |
-| `git push` | Upload commits to the matching branch. |
-| `git fetch origin` | Download information about shared changes. |
-| `git log --oneline` | Inspect compact history. |
-| `git show COMMIT_ID` | Inspect a commit. |
-
-***
-
-## 14. Individual completion checklist
-
-- [ ] I cloned the shared repository and created my own branch.
-- [ ] I created a virtual environment and installed the tools.
-- [ ] I checked browser availability and recorded restrictions.
-- [ ] I inspected the website input.
-- [ ] I recorded and replayed browser interactions.
-- [ ] I created my own test file.
-- [ ] I can distinguish actions from assertions.
-- [ ] I ran positive and negative tests.
-- [ ] I used a parameterized test.
-- [ ] I selected another available browser.
-- [ ] I recorded exact browser names and commands.
-- [ ] I understand Chrome and Edge channel selection.
-- [ ] I understand standalone scripts versus pytest tests.
-- [ ] I generated an HTML report.
-- [ ] I inspected a screenshot and trace.
-- [ ] I restored the deliberately incorrect expectation.
-- [ ] I created additional tests.
-- [ ] I recorded actual outcomes and uncertainties.
-- [ ] I committed and pushed my own work.
-- [ ] I integrated my contribution through a PR.
-- [ ] I completed my reflection.
-- [ ] I can explain one of my commits.
-- [ ] No sensitive information was committed.
-- [ ] My local `main` is updated and my working directory is clean.
-
-***
-
-## 15. Optional extension activities — outside the in-class practical
-
-The activities in this section are not required for the guided 2.5-hour practical.
-
-Students are encouraged to attempt them independently, outside class, if they have the interest, time and bandwidth. These activities provide additional practice in automated testing: choosing scenarios, writing assertions, reusing code, varying data and investigating failures.
-
-Use one available browser for these activities. Continue recording your progress using Git.
-
-Choose one or more activities after completing the required practical.
-
-### A. Automate a complete task journey
-
-Create a test that follows a task through several stages:
-
-```text
-Create a task → Edit its name → Mark it complete → Delete it
-```
-
-Before writing code:
-
-1. Perform the journey manually.
-2. Identify the starting state.
-3. Write the expected result after each stage.
-4. Decide which assertions will verify those results.
-
-Your automated test should check:
-
-- The task appears after creation.
-- The updated name appears after editing.
-- The checkbox is checked after completion.
-- The task is absent after deletion.
-
-Do not rely only on the final empty list. Verify intermediate results so that a failure identifies which stage did not behave as expected.
-
-Use Codegen to help identify unfamiliar controls, but inspect and improve the generated code.
-
-Suggested test name:
+The updated part looks like this:
 
 ```python
-def test_task_can_be_created_edited_completed_and_deleted(page: Page):
-    ...
+@pytest.mark.parametrize(
+    "task_text",
+    ["", " ", "   ", "    "],
+    ids=["empty", "one-space", "three-spaces", "four-spaces"],
+)
 ```
 
-Replace `...` with your implementation. It is a planning placeholder, not a completed test.
+Keep the test function below it unchanged.
 
-#### Record your observations
+Rerun the file. It now has six cases.
 
-- Which stage was most difficult to automate?
-- Which assertions helped identify the stage reached?
-- What could the test miss if it checked only the final result?
+### Try recording another action
 
-#### Git checkpoint
+Start a new recording and try completing a task.
 
-Suggested message:
+Read the generated checkbox action and compare it with Section 6.
 
-```text
-Add automated task lifecycle test
+Add a check for the checkbox state if it is missing.
+
+### Explore editing or deleting
+
+Try the action manually first.
+
+Record it with Codegen, then inspect the generated code.
+
+Reuse earlier assertions to check the changed task text or the remaining task count.
+
+If you are not sure what the website is meant to do, treat the result as an observation rather than deciding that it is a defect.
+
+---
+
+## 14. Optional: save your work with Git
+
+Git is not needed to learn the main testing activities.
+
+You can keep your local project folder as your practice workspace.
+
+If you already use Git, create `.gitignore` in the project folder before adding files:
+
+```gitignore
+.venv/
+__pycache__/
+.pytest_cache/
+test-results/
+reports/
+recordings/
+.env
 ```
 
-### B. Expand data-driven testing
+Keep test source files and configuration files.
 
-Extend your tests to check different valid task names.
+Do not upload virtual environments, private data or generated browser traces.
 
-Possible data:
+Review what you are sharing before pushing to a remote repository.
 
-```python
-task_names = [
-    "Read testing notes",
-    "Prepare checklist 123",
-    "Review: add, edit and delete",
-    "A",
-]
-```
+Group branches, pull requests, contribution records and written reflections are not required for this practical.
 
-Use `@pytest.mark.parametrize` to run the same test with each value. pytest creates a separate test case for each supplied parameter set.
+---
 
-For each name:
+## Quick command reference
 
-1. Start with an empty task list.
-2. Enter the value.
-3. Submit it.
-4. Check that exactly one task exists.
-5. Check that the displayed text matches the expected result.
-6. Check that the input is cleared.
+Run these from the project folder using its virtual environment.
 
-You may also investigate leading and trailing spaces. State the expected behaviour separately rather than assuming displayed text always matches the original input exactly.
-
-#### Record your observations
-
-- Which variations were useful?
-- Did any case require a different expected result?
-- How much repeated code did parametrization remove?
-
-#### Git checkpoint
-
-Suggested message:
-
-```text
-Expand data-driven task creation tests
-```
-
-### C. Create a reusable helper
-
-Identify repeated actions, such as:
-
-```text
-Find input → Enter task name → Press Enter
-```
-
-Create a helper in your own test file:
-
-```python
-def add_task(page: Page, task_name: str):
-    task_input = page.get_by_placeholder(
-        "What needs to be done?",
-        exact=True,
-    )
-
-    task_input.fill(task_name)
-    task_input.press("Enter")
-```
-
-Use it in a test:
-
-```python
-def test_add_two_tasks(page: Page):
-    page.goto(URL)
-
-    task_items = page.locator(".todo-list li")
-
-    expect(task_items).to_have_count(0)
-
-    add_task(page, "Read the instructions")
-    add_task(page, "Prepare the test cases")
-
-    expect(task_items).to_have_count(2)
-
-    expect(task_items.locator("label")).to_have_text(
-        [
-            "Read the instructions",
-            "Prepare the test cases",
-        ]
-    )
-```
-
-Keep your existing imports and `URL` definition.
-
-The helper performs repeated actions. The test still contains assertions explaining what it verifies.
-
-After the change:
-
-1. Run your complete file.
-2. Confirm that earlier tests still behave as expected.
-3. Inspect changes before committing.
-
-#### Record your observations
-
-- What repetition did the helper remove?
-- Does the test remain easy to understand?
-- Which checks should remain visible in the test?
-
-#### Git checkpoint
-
-Suggested message:
-
-```text
-Refactor repeated task entry into a helper
-```
-
-### D. Strengthen a weak automated test
-
-Create a temporary example of a weak test:
-
-```python
-def test_add_task_weak(page: Page):
-    page.goto(URL)
-
-    task_input = page.get_by_placeholder(
-        "What needs to be done?",
-        exact=True,
-    )
-
-    task_input.fill("Prepare testing notes")
-    task_input.press("Enter")
-```
-
-This performs actions but does not explicitly verify the resulting task.
-
-Improve it by adding assertions for:
-
-- The starting state.
-- The number of tasks after submission.
-- The task text.
-- The cleared input.
-
-Then investigate whether the improved test detects a deliberately incorrect expected value. Restore the correct expectation afterwards.
-
-Use Playwright's retrying web assertions rather than arbitrary pauses to wait for expected page conditions.
-
-#### Record your observations
-
-- What did the original test actually verify?
-- What confidence did each assertion add?
-- Which deliberate mistake did the improved test detect?
-
-#### Git checkpoint
-
-Suggested message:
-
-```text
-Strengthen task creation assertions
-```
-
-### E. Automate filter behaviour
-
-Create a test that prepares a small, known set:
-
-```text
-Task A — active
-Task B — completed
-Task C — active
-```
-
-Automate checks for:
-
-1. All showing all three tasks.
-2. Active showing only Tasks A and C.
-3. Completed showing only Task B.
-4. Returning to All without losing any tasks.
-
-Check both the displayed count and task text. A count alone cannot identify whether the correct tasks were displayed.
-
-Keep required setup inside the test. Do not depend on another test having created or completed tasks.
-
-#### Record your observations
-
-- Why is text checking stronger than count checking alone?
-- What setup made the expected results predictable?
-- Did changing filters affect the underlying tasks?
-
-#### Git checkpoint
-
-Suggested message:
-
-```text
-Add automated task filter checks
-```
-
-### F. Build a small regression test collection
-
-Choose useful tests that you would rerun after an application change.
-
-Possible coverage:
-
-- Adding a valid task.
-- Rejecting an empty task.
-- Editing a task.
-- Completing a task.
-- Deleting a task.
-- Filtering active and completed tasks.
-
-For each test, record:
-
-- The behaviour it protects.
-- Why it is worth repeating.
-- Its required starting state.
-- Its main assertion.
-
-Run your own file:
+### Watch your tests
 
 ```bash
-python -m pytest tests/test_member_1.py --browser chromium --html=reports/member-1-regression.html --self-contained-html
+python -m pytest tests/test_tasks.py --browser chromium --headed --slowmo 300
 ```
 
-Use your actual member number and one available browser.
+### Run without showing the browser
 
-Inspect the report and record the outcome. Do not run large repeated loops against the public website.
-
-#### Git checkpoint
-
-Suggested message:
-
-```text
-Organise and execute a small regression test collection
+```bash
+python -m pytest tests/test_tasks.py --browser chromium
 ```
 
-### Optional activity completion
+### Run the add-task test only
 
-For each activity attempted:
-
-- [ ] I recorded the testing objective.
-- [ ] I defined expected behaviour before execution.
-- [ ] I added meaningful assertions.
-- [ ] My tests establish their own required state.
-- [ ] I executed tests and recorded actual outcomes.
-- [ ] I investigated unexpected results rather than hiding them.
-- [ ] I restored deliberately incorrect expectations.
-- [ ] I committed and pushed my work.
-- [ ] I recorded what I learned and what I would improve next.
-
-***
-
-## Closing reminder
-
-The aim is not to produce the largest number of scripts or obtain passing results at any cost.
-
-Develop the habit of selecting meaningful scenarios, writing clear assertions, keeping tests repeatable, investigating failures and preserving evidence.
-
-```text
-Choose a scenario → Define the expectation → Automate
-                  → Execute → Investigate → Improve
-                  → Commit → Share → Reflect
+```bash
+python -m pytest tests/test_tasks.py::test_add_task --browser chromium --headed
 ```
+
+### Create a report
+
+Create the `reports` folder first if it does not exist.
+
+```bash
+python -m pytest tests/test_tasks.py --browser chromium --html=reports/results.html --self-contained-html
+```
+
+### Start recording
+
+Create the `recordings` folder first if it does not exist.
+
+```bash
+python -m playwright codegen --target python-pytest -o recordings/recorded_task.py https://demo.playwright.dev/todomvc/
+```
+
+### Replay your recording
+
+```bash
+python -m pytest recordings/recorded_task.py --browser chromium --headed --slowmo 300
+```
+
+---
+
+## Closing note
+
+You have practised:
+
+- Opening a page.
+- Performing browser actions.
+- Checking results.
+- Trying several inputs.
+- Recording actions.
+- Reading results.
+- Investigating a failure.
+
+A passing test means its particular checks succeeded in that run.
+
+It does not prove that the whole website is error-free.
+
+Keep your examples small and understandable. Repeat an activity whenever you need to, and use failed checks to understand what happened.
