@@ -18,11 +18,13 @@ Work in a group of 3–5. Each member uses their own computer and GitHub account
 >
 > Each member must create and run two additional tests beyond the guided examples. The two tests should check different behaviours or conditions.
 >
-> Agree on the scenarios as a group before coding and record the choices in `docs/test-plan.md`. Choose scenarios that do not duplicate another member's additional tests wherever possible.
+> Agree scenarios as a group before coding and record the choices in `docs/test-plan.md`. Choose scenarios that do not duplicate another member's additional tests wherever possible.
 >
-> If there is genuinely no suitable alternative and a scenario must be repeated, agree on this within the group and note the reason in `docs/test-plan.md`. Each member must write their own implementation; the code must not be copied or identical.
+> If there is genuinely no suitable alternative and a scenario must be repeated, agree this within the group and note the reason in `docs/test-plan.md`. Each member must write their own implementation; the code must not be copied or identical.
 >
-> Changing only variable names, function names, comments or task wording does not make copied code a different implementation. For a repeated scenario, use a meaningful difference in the setup, action sequence, input conditions or assertions while still checking the intended behaviour.
+> Changing only variable names, function names, comments or task wording does not make copied code a different implementation. Use a meaningful difference in setup, action sequence, input conditions or assertions while still checking the intended behaviour.
+>
+> Each member must capture and share their own PNG evidence for both additional tests: at least one final-result image per test. For an unavoidable repeated scenario, independently written code and independently captured screenshots are both required.
 >
 > These rules apply to the two additional tests. Members may use the same supplied code for the guided examples.
 
@@ -42,6 +44,7 @@ Work in a group of 3–5. Each member uses their own computer and GitHub account
 | Login website | [The Internet login demonstration](https://the-internet.herokuapp.com/login) |
 | Personal source file | `tests/test_member_1.py`, using your own member number. |
 | Cases per member | Eight guided cases plus two additional individual cases: ten before optional additions. |
+| PNG evidence per member | At least two selected images: one final-result PNG for each additional test, shared under `docs/evidence/member-N/`. |
 | After the lesson | Optional activities in Section 16. |
 
 ### Tools used
@@ -80,11 +83,11 @@ Work in a group of 3–5. Each member uses their own computer and GitHub account
 
 | Lesson material | Connection to the activities |
 | --- | --- |
-| `OAL-03-1-Why-Do-We-Test.pptx` | Testing purpose, levels, positive and negative cases, input groups, boundaries and test parameters. |
+| `OAL-03-1-Why-Do-We-Test.pptx` | Purpose, testing levels, positive and negative cases, input groups, boundaries and test parameters. |
 | `OAL-03-2-Manual-vs-Automated.pptx` | Manual exploration, repeatable checks, regression testing, reusable code and maintenance. |
 | `03-3-Testing-Tools.pptx` | Match tools to goals, distinguish built-in and external tools, black-box testing and diagnostic outputs. |
 
-The slides provide the concepts. This practical applies selected concepts through small browser checks rather than attempting every testing type or tool.
+The slides provide the concepts. This practical applies selected concepts through small browser checks rather than attempting every testing type or tool. The PowerPoint files are not changed by this practical.
 
 ## Contents
 
@@ -232,9 +235,9 @@ The project-specific Python environment and testing packages will be set up toge
 | 50–65 minutes | Test correct and incorrect login details. | 10 |
 | 65–75 minutes | Record, add a check and replay. | 11 |
 | 75–80 minutes | Use the helper to add two tasks. | 12.1–12.3 |
-| 80–100 minutes | Create and run two additional individual tests. | 12.4 |
-| 100–110 minutes | Generate a report and inspect screenshots. | 13 |
-| 110–120 minutes | Combine completed files and update local main. | 14 |
+| 80–100 minutes | Create two additional tests and add their PNG captures. | 12.4 |
+| 100–110 minutes | Generate a report; inspect routine screenshots and selected PNG evidence. | 13 and 12.4 Step 9 |
+| 110–120 minutes | Combine completed source and selected evidence; update main. | 14 |
 | Total | 120 minutes | |
 
 The timing assumes the software, accounts and website access in Section 1 are already available. If a check reveals a problem, use Section 17 and preserve your progress. Continue unfinished main activities afterwards if necessary. Do not hide errors or remove checks to keep to the timing.
@@ -291,7 +294,7 @@ A negative test can pass. The incorrect-password test passes when the website re
 
 ### Why test, and where do these checks fit?
 
-Tests help reveal problems before users depend on the software. A failed check needs investigation: the cause may be the application, the test, the environment or an unavailable website. Passing selected checks does not prove that all defects are absent.
+Tests help reveal problems before users depend on the software. A failure needs investigation: the cause may be the application, test code, environment or an unavailable website. Passing selected checks does not prove that all defects are absent.
 
 | Idea from the slides | Meaning here |
 | --- | --- |
@@ -302,25 +305,25 @@ Tests help reveal problems before users depend on the software. A failed check n
 
 These are small user-flow checks near the top of the testing pyramid. They do not replace unit or integration tests. Using pytest does not make a browser check a unit test. The `add_task()` helper supports your test; it is not an isolated function from the demonstration application.
 
-This practical does not measure code coverage, perform load or security testing, validate internal service integration, or provide acceptance sign-off. Login checks verify visible behaviour, not the security of the login system. Test durations are not performance benchmarks.
+This practical does not measure code coverage, perform load or security testing, validate internal service integration, or provide acceptance sign-off. Login checks verify visible behaviour, not login-system security. Test durations are not performance benchmarks.
 
 ### Built-in and external tools complement each other
 
 | Tool | Source and purpose |
 | --- | --- |
 | Browser Developer Tools | Built into Chrome or Edge; inspect elements, messages and requests. |
-| Python `unittest` | Built into Python; suitable for focused local checks. |
+| Python `unittest` | Built into Python; suitable for local checks. |
 | Playwright, Codegen and Trace Viewer | Additional tooling for browser automation and investigation. |
 | pytest and pytest-html | Additional Python packages for execution and reporting. |
-| Git and GitHub | Separate version-control tools and service for sharing source. |
+| Git and GitHub | Separate version-control tools and service. |
 
 Choose tools for the testing goal. Editor integration does not make an external package part of Python's standard library.
 
 ### Positive or negative is different from pass or fail
 
-A normal task and correct login are positive examples. Blank task input and an incorrect password are negative examples. Both pass when the expected behaviour occurs.
+Normal task text and correct login are positive examples. Blank task input and an incorrect password are negative examples. Both types pass when the expected behaviour occurs.
 
-The slides describe cases where invalid input should be rejected. In pytest output, `FAILED` means a test step or assertion did not succeed; negative cases should not automatically report `FAILED`.
+The slides describe cases where invalid input should be rejected. In pytest output, `FAILED` means a step or assertion did not succeed; negative cases should not automatically report `FAILED`.
 
 ### Shared work pattern
 
@@ -405,11 +408,11 @@ You should be on `main`. `origin`, Git's short name for the remote repository, s
 
 ### 4.4 Agree your two additional scenarios
 
-Look ahead at Section 12.4 and reserve two scenarios per member. Prefer different choices across the group. The two choices within one member's file should still differ and go beyond the guided cases.
+Look ahead at Section 12.4 and reserve two scenarios per member. Prefer different choices across the group. The choices within one member's file should still differ and go beyond the guided cases.
 
-If a scenario must be repeated because there is genuinely no suitable alternative, agree and record the reason and meaningful implementation differences. Every member writes their own code. Use the team notice near the start of the guide.
+If a scenario must be repeated because there is genuinely no suitable alternative, record the reason and meaningful implementation differences. Everyone writes their own code and captures their own PNG evidence. Follow the team notice near the start of this guide.
 
-The coordinator records the agreed choices in the setup plan described in Section 5.5. Everyone implements and runs their own two tests.
+The coordinator records agreed choices in the setup plan in Section 5.5.
 
 ***
 
@@ -479,23 +482,24 @@ Keep `--browser chromium`. Members choose Chrome or Edge through their commands.
 
 ### 5.5 Create the shared scenario plan
 
-Create `docs/test-plan.md`. The coordinator records the choices agreed by the group:
+Create `docs/test-plan.md`. The coordinator records the agreed choices:
 
 ```markdown
 # Group test choices
 
-Each member creates two additional tests beyond the guided examples.
+Each member creates two additional tests and captures a final-result PNG for each.
 Prefer different scenarios across the group.
 If a repeat is unavoidable, record the reason and meaningful code differences.
-Renaming variables, functions or task wording alone is not sufficient.
+Each member writes their own code and captures their own screenshots.
+Cosmetic changes to copied code are not sufficient.
 
-| Member | First additional scenario | Second additional scenario |
-| --- | --- | --- |
-| 1 | | |
-| 2 | | |
-| 3 | | |
-| 4, if present | | |
-| 5, if present | | |
+| Member | First additional scenario | Second additional scenario | Evidence folder |
+| --- | --- | --- | --- |
+| 1 | | | `docs/evidence/member-1/` |
+| 2 | | | `docs/evidence/member-2/` |
+| 3 | | | `docs/evidence/member-3/` |
+| 4, if present | | | `docs/evidence/member-4/` |
+| 5, if present | | | `docs/evidence/member-5/` |
 
 ## Unavoidable repeated scenarios, if any
 
@@ -505,7 +509,7 @@ Renaming variables, functions or task wording alone is not sufficient.
 
 Remove unused member rows. Use short descriptions, not only function names. Leave the repeated-scenario table empty if there are no repeats.
 
-Include this plan in the setup changes so everyone receives it before creating individual branches. Nominate one person to update shared choices if they change later.
+Include the plan in setup changes so everyone receives it before creating individual branches. Nominate one person to update shared choices later if necessary.
 
 ### 5.6 Commit, push and merge
 
@@ -772,7 +776,7 @@ An empty or spaces-only task should not be added. This negative test passes when
 
 ### Choose inputs for a reason
 
-Equivalent testing, or equivalence partitioning, groups inputs expected to behave similarly. Meaningful text is an accepted group; empty and whitespace-only text form a rejection group. The three blank examples below are variations in one rejection group, not three distinct boundaries.
+Equivalent testing, or equivalence partitioning, groups inputs expected to behave similarly. Meaningful text is an accepted group; empty and whitespace-only text form a rejection group. The three blank examples below are variations in one group, not three distinct boundaries.
 
 Sampling does not prove every input behaves identically. Boundary testing checks values at or near a defined limit. No maximum task length is specified here, so do not invent one. Optional Section 16.8 explores lengths zero, one and two around the minimum non-empty length.
 
@@ -1144,19 +1148,17 @@ git push
 
 ### 12.4 Create two different tests of your own
 
-Allow about 20 minutes. Every member creates two additional tests in their own file. Start with one, run it, then work on the second.
+Allow about 20 minutes. Every member creates two additional tests in their own file. Start with one, run it, then work on the second. Capture a final-result PNG for each completed test using Step 9 below.
 
-The two tests should check different behaviours or conditions and add meaningful checks beyond the eight guided cases. Coordinate across your group so additional scenarios are different wherever possible. Uniqueness is within your group, not across the whole class.
+The tests should check different behaviours or conditions and go beyond the eight guided cases. Coordinate so scenarios are different across your group wherever possible. Uniqueness is within the group, not the whole class.
 
-If there is genuinely no suitable alternative and a scenario is repeated, use the team notice near the start of this guide: agree the reason, record it and write separate implementations with meaningful differences. Do not copy another member's code or disguise copied code by renaming things.
+If there is genuinely no suitable alternative and a scenario is repeated, follow the team notice: agree the reason, record it and write independent implementations with meaningful differences. Renaming things does not make copied code different. Each member still captures their own PNGs.
 
 #### Step 1: Agree two scenarios per member
 
-Use `docs/test-plan.md`, created during setup. The coordinator records the agreed choices before merging that file. This is a coordination aid, not a separate findings report.
+Use `docs/test-plan.md`, created during setup. The coordinator records agreed choices before merging the setup file. This is a coordination aid, not a separate findings report.
 
-Avoid having every member edit the shared plan independently. If choices change, agree as a group and let one nominated member update the plan on a branch. For an unavoidable repeat, record both the reason and how the implementations will differ.
-
-Use your own ideas or choose from these starting points:
+Avoid having all members edit the shared plan independently. If choices change, agree as a group and nominate one person to update the plan on a branch. For a necessary repeat, record the reason and meaningful implementation differences.
 
 | Scenario idea | What makes it different | Possible result to check |
 | --- | --- | --- |
@@ -1164,29 +1166,24 @@ Use your own ideas or choose from these starting points:
 | Cancel an edit with Escape | Cancels instead of saving. | Original name remains. |
 | Delete an active task | Removes an unfinished task. | Selected task disappears; another remains. |
 | Delete a completed task | Removes a finished task. | Selected completed task is absent. |
-| Clear completed tasks from a mixed list | Removes finished items together. | Active tasks remain; completed ones are gone. |
+| Clear completed tasks from a mixed list | Removes finished items together. | Active tasks remain; completed tasks are gone. |
 | Mark all tasks complete | Uses the whole-list control. | All prepared tasks are completed. |
 | Mark all tasks active again | Reverses whole-list completion. | Prepared checkboxes are no longer checked. |
 | Active filter on a mixed list | Checks exclusion of completed tasks. | Only unfinished names are displayed. |
-| Completed filter on a mixed list | Goes beyond the guided single-task case. | Only completed names are displayed. |
-| Return to All from a filtered mixed list | Restores the full display. | All prepared names are shown. |
+| Completed filter on a mixed list | Goes beyond the guided single-task example. | Only completed names are displayed. |
+| Return to All from a filtered mixed list | Restores the full display. | All prepared names appear. |
 | Refresh after adding tasks | Checks persistence in the same session. | Added names remain after reload. |
 | Repeated names | Checks duplicate-name handling. | Both expected rows remain. |
 | Leading and trailing spaces | Checks normalization, not just different wording. | Displayed text follows the observed and agreed trimming rule. |
 | Incorrect username with the practice password | Checks another login rejection condition. | Expected username error appears and login is not completed. |
 
-These are exploration ideas, not guaranteed outcomes for future versions of the public sites. Try your choice manually and confirm the expected result. If the rule is unclear, choose a clearer scenario or state the assumption honestly.
+These are ideas, not guaranteed outcomes for future versions of public sites. Try the behaviour manually and confirm the expectation. If a rule is unclear, choose a clearer scenario or state the assumption honestly.
 
-For five members, aim to reserve ten distinct scenarios. Use the documented exception only if there is genuinely no suitable alternative. The two scenarios within one member's file should still differ.
+For five members, aim for ten distinct scenarios. Use the exception only when there is genuinely no suitable alternative. The two choices within one member's file should still differ.
 
 #### Step 2: Try your first scenario manually
 
-1. Open the appropriate demonstration website.
-2. Perform the actions once.
-3. Notice the controls used and the result.
-4. Decide which assertions will check that result.
-
-Keep the scenario small. Use fictional task data and only the demonstration login details supplied in this guide.
+Open the relevant demonstration website, perform the actions, notice the result and decide which assertions will check it. Keep it small. Use fictional task data and only the public demonstration login details supplied in this guide.
 
 #### Step 3: Identify the test parameters
 
@@ -1194,7 +1191,7 @@ Use short comments if helpful. For example:
 
 ```text
 Scenario: Active shows unfinished tasks only.
-Condition: Fresh session and an empty task list.
+Condition: Fresh session and an empty list.
 Values: “Read a chapter” and “Write a summary”.
 Description: Add both, complete the first, then select Active.
 Expected outcome: Only “Write a summary” is displayed.
@@ -1202,61 +1199,63 @@ Expected outcome: Only “Write a summary” is displayed.
 
 This is a plan, not Python code. No separate document is needed for each test.
 
-#### Step 4: Add the first new function
+#### Step 4: Add your first new function
 
-Append a uniquely named test to your personal file. For example:
+Append a uniquely named function to your personal file. For example:
 
 ```python
 def test_active_filter_shows_unfinished_task(page: Page):
     page.goto(URL)
 
-    # Add your setup and browser actions here.
+    # Add your setup and actions here.
 
     # Add assertions for the expected result here.
+
+    # After the assertions, capture your PNG as shown in Step 9.
 ```
 
 > [!IMPORTANT]
-> This skeleton is not a finished test. Without assertions, it may pass while checking nothing useful. Add actions and meaningful assertions before treating it as complete.
+> This is a skeleton, not a finished test. Without assertions, it may pass while checking nothing useful. Add actions, meaningful checks and your screenshot call before treating it as complete.
 
-Keep `def` at the left edge and indent instructions by four spaces. Keep earlier imports, `URL`, helper and guided tests.
+Keep `def` at the left edge and indent instructions by four spaces. Keep the existing imports, `URL`, helper and guided tests.
 
 #### Step 5: Reuse familiar patterns
 
-| What you need | Pattern |
+| Need | Pattern |
 | --- | --- |
 | Open the task list | `page.goto(URL)` |
 | Add a task | `add_task(page, "A fictional task")` |
-| Find rows | `page.locator(".todo-list li")` |
-| Complete a task | Checkbox code from Section 8. |
-| Select a filter | Completed-link action with the appropriate link name. |
+| Find task rows | `page.locator(".todo-list li")` |
+| Complete a task | Checkbox code in Section 8. |
+| Select a filter | Completed-link action using the appropriate link name. |
 | Check count | `expect(task_items).to_have_count(...)` |
-| Check text | `expect(task_items.locator("label")).to_have_text([...])` |
+| Check labels | `expect(task_items.locator("label")).to_have_text([...])` |
 
-Replace `...` with expected values. These incomplete reference expressions are not finished checks.
+Replace `...` with your expected values. Incomplete reference expressions are not finished checks.
 
-If you use `add_task(...)`, its complete helper must be in the same file, outside every test. It is not built into Playwright.
+If you call `add_task(...)`, its complete helper must be in this same file, outside every test. It is not built into Playwright.
 
-Codegen can help find unfamiliar actions. Read its generated code and add useful assertions. Every test receives a fresh session, so create everything it needs inside that test.
+Codegen can help find unfamiliar actions. Read the code and add useful assertions. Every test receives a fresh session; prepare everything it needs inside that test.
 
-#### Step 6: Run the first test by itself
+#### Step 6: Run the first test individually
 
-Save with Ctrl+S. Use your number and exact function name:
+Save with Ctrl+S. Use your number and actual function name:
 
 ```bat
 python -m pytest tests/test_member_1.py::test_active_filter_shows_unfinished_task --browser-channel %TEST_BROWSER% --headed --slowmo 300
 ```
 
-Watch and read the result. If it fails, check the failing line, loaded page, actions and expected values. Change one thing at a time. Use Section 17 instead of deleting checks to obtain a pass.
+Watch and read the result. If it fails, inspect the failing line, loaded page, actions and expected values. Change one thing at a time. Use Section 17 rather than deleting assertions to obtain a pass.
 
 #### Step 7: Create and run your second test
 
-Use your second scenario, another descriptive `test_` name, its own setup and meaningful assertions. It must not depend on the first test.
+Use your second scenario with another descriptive `test_` name, its own setup and useful assertions. It must not depend on the first test.
 
-Compare choices with the group before merging. Replace accidental duplicates where possible. For an unavoidable repeated scenario, confirm the documented reason and meaningful implementation differences. Cosmetic renaming is not enough.
+Compare choices with the group again. Replace accidental duplicates where possible. For an unavoidable repeat, confirm the documented reason and meaningful code differences. Cosmetic renaming is not sufficient.
 
-Use one ordinary test function per additional scenario here. Save more parametrized examples for post-lesson work so the main count stays simple.
+Use one ordinary test function per additional scenario here. Leave more parametrized additions for post-lesson work so the main count stays simple.
 
-#### Step 8: Run your complete personal file
+#### Step 8: Run the complete personal file
 
 ```bat
 python -m pytest tests/test_member_1.py --browser-channel %TEST_BROWSER% --headed
@@ -1264,18 +1263,106 @@ python -m pytest tests/test_member_1.py --browser-channel %TEST_BROWSER% --heade
 
 Eight guided cases plus your two completed additional functions give ten cases. If all checks succeed, the summary reports `10 passed`.
 
-Do not add a dummy test, rename a guided case or remove assertions just to reach ten. If you need longer, finish both tests after the lesson before merging your completed contribution. Keep unfinished drafts in a clearly labelled local file under ignored `recordings/` while working on them. Do not merge empty tests that silently pass.
+Do not add dummy tests, rename guided cases or remove assertions just to reach ten. If you need longer, save your attempt and finish both tests and PNGs after the lesson before merging your completed contribution. Keep unfinished drafts in a clearly labelled local file under ignored `recordings/` while working. Do not merge empty tests that silently pass.
 
-#### Step 9: Share working source
+#### Step 9: Capture PNG evidence for both tests
+
+Each member produces at least two PNG files: one final-result screenshot for each additional test. Use your own test executions, not another member's images.
+
+##### Create your evidence folder
+
+In VS Code, create a folder using your member number:
+
+```text
+docs/
+└── evidence/
+    └── member-1/
+```
+
+Use `member-2`, `member-3` and so on for others. Create it before running screenshot code.
+
+This is the selected evidence you will share. Routine screenshots and traces remain in ignored `test-results/`.
+
+##### Add a screenshot call after the assertions
+
+Inside your first additional test, after the checks for its intended outcome, add a call like:
+
+```python
+page.screenshot(
+    path="docs/evidence/member-1/extra-test-1-active-filter.png",
+    full_page=True,
+)
+```
+
+Inside your second additional test, use a different descriptive path, for example:
+
+```python
+page.screenshot(
+    path="docs/evidence/member-1/extra-test-2-delete-task.png",
+    full_page=True,
+)
+```
+
+These are screenshot snippets, not complete test functions. Replace the member number and scenario names. Keep each call indented inside its appropriate test, after the relevant assertions.
+
+| Part | Meaning |
+| --- | --- |
+| `page.screenshot(...)` | Capture the current browser page. |
+| `path=...` | Choose the PNG filename and location. |
+| `full_page=True` | Capture the full scrollable page. |
+
+> [!IMPORTANT]
+> A screenshot supports the result but does not replace an assertion or independently prove the test passed.
+>
+> If an earlier assertion fails, the screenshot call is not reached. Investigate and rerun. An image from an older run may still exist, so confirm the current test passed and the image was updated.
+
+Save, then rerun each additional test with its exact function name. Open both images in VS Code and check they show the intended results, are readable and contain only practice data.
+
+If an intermediate state helps explain the result, you may capture another PNG at that step using another filename. Keep at least one final-result PNG per additional test.
+
+Expected folder example:
+
+```text
+docs/evidence/member-1/
+├── extra-test-1-active-filter.png
+└── extra-test-2-delete-task.png
+```
+
+Do not use one filename for both tests: the later capture replaces the earlier image. A later run of the same screenshot call also replaces its image.
+
+##### Keep selected evidence separate from routine output
+
+| Location | Purpose | Shared through Git? |
+| --- | --- | --- |
+| `docs/evidence/member-1/` | Selected PNGs from your two additional tests. | Yes. |
+| `test-results/` | Routine generated screenshots, traces and other output. | No: ignored. |
+| `reports/` | Local HTML reports. | No: ignored. |
+| `recordings/` | Local experiments. | No: ignored. |
+
+Keep `.gitignore` unchanged. Do not add `docs/evidence/` to it.
+
+#### Step 10: Commit and push source plus selected PNGs
+
+After both tests succeed and the two images have been inspected:
 
 ```bat
 git add tests/test_member_1.py
+git add docs/evidence/member-1/
 git diff --staged
-git commit -m "Add two individual browser behaviour tests"
+git status
+git commit -m "Add individual tests and PNG evidence"
 git push
 ```
 
-Use your filename. Name the two scenarios in the PR description. Where a scenario was necessarily repeated, identify its recorded reason and implementation differences as well.
+Use your own paths. Inspect PNGs directly before committing: a text diff does not show their visual contents.
+
+In your PR description, identify:
+
+- First additional scenario and its PNG path.
+- Second additional scenario and its PNG path.
+- Any necessary repeated scenario, its recorded reason and implementation differences.
+
+For an unavoidable repeat, both the code and the evidence must be produced independently by each member.
 
 ***
 
@@ -1284,14 +1371,14 @@ Use your filename. Name the two scenarios in the PR description. Where a scenari
 
 ### Why rerun earlier checks?
 
-Regression testing checks that existing behaviour still works after changes. These checks can be rerun after application updates. Here, rerunning after test-code changes also confirms the collection still works. We do not control public-site releases, so this is not a controlled before-and-after application-change experiment.
+Regression testing checks that existing behaviour still works after changes. In a real application, these checks can be rerun after releases. Here, rerunning after test-code changes also confirms the collection works. We do not control public-site releases, so this is not a controlled before-and-after application-change experiment.
 
-Compare actual results with expected outcomes. A failure may come from application behaviour, test code or environment. A screenshot helps investigate; it does not replace an assertion.
+Compare actual results with expectations. A failure may come from application behaviour, test code or environment. A screenshot aids investigation but does not replace an assertion.
 
 
 ### 13.1 Run with automatic screenshots
 
-Check `reports` exists:
+Check `reports` exists. Your personal file now also includes the two explicit screenshot calls from Section 12.4; those write selected PNGs under `docs/evidence/` independently of the automatic output below.
 
 ```bat
 python -m pytest tests/test_member_1.py --browser-channel %TEST_BROWSER% --screenshot on --output test-results/member-1 --html=reports/member-1.html --self-contained-html
@@ -1325,7 +1412,7 @@ Subfolder names may be long. Find them rather than guessing.
 A screenshot shows the browser page, not the entire desktop or terminal summary.
 
 > [!IMPORTANT]
-> Assertions check behaviour. Screenshots provide pictures; they do not replace assertions. Reports and images are separate outputs here. Both stay local through `.gitignore`. Later runs using the same output location may replace browser output.
+> Assertions check behaviour. Screenshots provide pictures; they do not replace assertions. Reports and images are separate outputs here. Routine reports and images under `reports/` and `test-results/` stay local through `.gitignore`. The selected PNGs under `docs/evidence/` are shared. Later runs may replace generated output or overwrite an explicit screenshot using the same filename.
 
 ### 13.4 Failure-only screenshots
 
@@ -1335,7 +1422,9 @@ For later troubleshooting, replace `--screenshot on` with `--screenshot only-on-
 
 ## 14. Combine the group files
 
-All tests are started manually. Pushing and merging do not automatically run them: no GitHub Actions or other CI/CD workflow is configured here. The slides show how tests can later support continuous testing.
+Share test source and the selected PNG evidence for the two additional tests. Keep routine generated reports and browser output local.
+
+All tests are started manually. Pushing or merging does not trigger execution automatically: no GitHub Actions or other CI/CD workflow is configured. The slides show how these checks could later support continuous testing.
 
 
 ### 14.1 Check and push
@@ -1345,7 +1434,7 @@ git status
 git push
 ```
 
-If intended source changes remain, run your file, add it, inspect staged changes, commit and push. Do not add reports, environments, recordings or screenshots.
+If intended changes remain, run your file, add the source and selected PNGs under your `docs/evidence/member-N/` folder, inspect staged changes, commit and push. Do not add environments, recordings, routine reports or the whole `test-results/` folder.
 
 ### 14.2 Open and merge your PR
 
@@ -1354,8 +1443,9 @@ On GitHub:
 1. Open a PR from your personal branch to `main`.
 2. Use a title such as `Add Member 1 browser tests`.
 3. Look through Files changed with another member.
-4. Check the eight guided cases remain, both additional scenarios match the group plan, and assertions are meaningful. Prefer distinct scenarios across members; for an unavoidable repeat, confirm the recorded reason and independently written, meaningfully different code. Check no private data or local outputs appear.
-5. Merge one member's PR at a time.
+4. Check all eight guided cases remain, both additional scenarios match the group plan, and assertions are meaningful. For a necessary repeated scenario, confirm the recorded reason and independently written, meaningfully different code.
+5. Open both selected PNGs and check each comes from that member's own successful test run. Confirm paths and scenario descriptions match, and no private data appears.
+6. Merge one member's PR at a time.
 
 Separate filenames allow all files to sit beside each other. Do not edit another member's file during this activity.
 
@@ -1373,7 +1463,7 @@ You should see merged member files. A GitHub merge does not update your computer
 
 ### 14.4 Run the combined project once
 
-Choose one member:
+Choose one member to run:
 
 ```bat
 python -m pytest --browser-channel %TEST_BROWSER% --html=reports/group-results.html --self-contained-html
@@ -1387,11 +1477,13 @@ With eight guided cases and two completed additional functions per member:
 | 4 | 40 |
 | 5 | 50 |
 
-Each personal file contributes ten executions. Extra tests and parametrization change the count.
+Each personal file contributes ten executions. Optional tests and parametrization change the count.
 
-Execution count is not unique functional coverage. Guided cases are repeated deliberately. Additional scenarios should be distinct across the group wherever possible. A permitted repeat with different code does not automatically create additional functional coverage; compare what behaviour and conditions each test actually checks.
+Execution count is not unique functional coverage. Guided cases repeat deliberately. Additional scenarios should differ across members wherever possible. A permitted repeat with different code does not automatically create additional functional coverage; compare what each test actually checks.
 
-Avoid repeated whole-suite runs without a reason. Diagnose using the failing file and function. Make corrections on a new branch and combine through a PR. Continue longer investigations after the lesson if needed.
+Your additional tests contain explicit screenshot calls, so a group run can overwrite evidence PNGs in the runner's local copy with the same filenames. Every member must capture and commit their own original evidence before merging. Do not commit another member's regenerated images as your own evidence. Inspect any changed evidence files with `git status` after the group run. If you need to return other members' tracked evidence to the committed version, first check that their original evidence is safely committed and that you are not discarding any uncommitted work you need to keep.
+
+Do not repeatedly run the whole suite without a reason. Diagnose a failure by its filename and function. Fix on a new branch and combine through a PR; continue longer investigations after the lesson if necessary.
 
 
 ***
@@ -1503,7 +1595,7 @@ Look through navigation, text entry, Enter and the failed check. Restore:
 expect(task_labels).to_have_text(["Read testing notes"])
 ```
 
-Save and rerun your file. With eight guided cases and both individual tests complete, success reports `10 passed`. Optional additions change the count.
+Save and rerun your file. With the eight guided cases and two individual tests complete, success reports `10 passed`. Optional additions change the count.
 
 ```bat
 git diff
@@ -1617,15 +1709,15 @@ Press `q` if Git opens a scrolling view.
 
 ### 16.8 Explore minimum-length boundary examples
 
-Compare text lengths zero, one and two, as examples at and next to a boundary. Do not assume an unstated maximum length.
+Compare lengths zero, one and two around the minimum non-empty text length. Do not assume an unstated maximum.
 
 | Input | Length | Expected outcome for this exercise |
 | --- | ---: | --- |
 | `""` | 0 | No task is added. |
-| `"A"` | 1 | A task labelled A appears. |
-| `"AB"` | 2 | A task labelled AB appears. |
+| `"A"` | 1 | Task A appears. |
+| `"AB"` | 2 | Task AB appears. |
 
-Try manually, then reuse the earlier automation patterns. One character is the minimum non-empty length explored here; whitespace validation is a separate consideration. Repeating the empty case adds an execution, not a wholly new behaviour. Optional tests increase the count beyond ten.
+Try manually, then reuse earlier automation patterns. Whitespace-only input is a separate validation consideration. Repeating the empty case adds an execution, not a wholly new behaviour. Optional tests increase the count beyond ten.
 
 ### 16.9 Compare a built-in Python tool
 
@@ -1660,9 +1752,9 @@ Run:
 python examples/builtin_unittest_example.py
 ```
 
-`self.assertEqual(actual, expected)` compares values. `unittest.TestCase` provides checks; `self` refers to the current test object. If all three succeed, the output reports three tests and `OK`.
+`self.assertEqual(actual, expected)` compares values. `unittest.TestCase` supplies checks; `self` refers to the current test object. If all three succeed, the output reports three tests and `OK`.
 
-No browser opens. This checks the local function in this file, not TodoMVC's implementation, and does not change the browser-case count. It contrasts built-in local unit testing with external pytest and Playwright browser checks. The separate pytest self-help guide provides more local-function practice.
+No browser opens. This checks the local function, not TodoMVC's implementation, and does not change your browser-case count. It contrasts built-in local unit testing with external pytest and Playwright browser checks. The separate pytest self-help guide gives more local-function practice.
 
 ***
 
@@ -1872,7 +1964,7 @@ Add two tasks                        1
 Total                                8
 ```
 
-Check you kept earlier tests when appending code. Each function in one file must have a different name; a later duplicate definition can replace an earlier one. The helper `add_task` is not a test. After Section 12.4, your two additional functions bring the personal total to ten before optional additions.
+Check you kept earlier tests when appending code. Each function in one file must have a different name; a later duplicate definition can replace an earlier one. The helper `add_task` is not a test. After Section 12.4, two additional functions bring the personal total to ten before optional additions.
 
 Optional tests increase the total. Running without a filename selects the group suite, not just your file. The separate recording is not included by the configured `testpaths = tests`.
 
@@ -1974,6 +2066,16 @@ The recorder generates starting code, not a guaranteed complete test. Read it an
 | Handwritten screenshot line did not run | A failed earlier assertion may have stopped execution before it. Use automatic failure screenshots. |
 
 If a report folder is missing, create `reports` in the project and rerun the report command. Do not move outputs into `tests` just to make them visible.
+
+#### Selected PNG evidence problems
+
+| Problem | What to check |
+| --- | --- |
+| Selected image missing | Create `docs/evidence/member-N/`, check the path, and confirm the test reached its screenshot call after all relevant assertions. |
+| An image exists but the latest test failed | It may be an older file. Fix the failure, rerun and check the image update before sharing it. |
+| Only one PNG remains | Use different filenames for the two additional tests. |
+| PNG not shown as a new Git file | Check it is under `docs/evidence/`, not ignored `test-results/`; confirm it exists and has not already been committed. |
+| Group run changed other members' PNGs | The explicit screenshot calls reran on your computer. Do not claim or commit those regenerated images as your own evidence. Check the existing committed originals. |
 
 ### 17.11 Git identity, access and branch problems
 
@@ -2149,7 +2251,7 @@ python -m pytest recordings/member_1.py --browser-channel %TEST_BROWSER% --heade
 
 A passing test means its particular checks succeeded in that run. It does not prove the whole website is error-free.
 
-Keep examples small and understandable. Use failures to understand what happened. Share working source without uploading private data or local browser outputs.
+Keep examples small and understandable. Use failures to understand what happened. Share working source and the selected PNGs from your own two additional tests. Do not upload private data, local environments or routine browser outputs.
 
 ```text
 Choose a behaviour → Define the expectation → Automate → Run
