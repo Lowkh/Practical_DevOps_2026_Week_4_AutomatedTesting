@@ -27,7 +27,7 @@ Work in a group of 3–5. Each member uses their own computer and GitHub account
 | Task-list website | [Playwright TodoMVC](https://demo.playwright.dev/todomvc/) |
 | Login website | [The Internet login demonstration](https://the-internet.herokuapp.com/login) |
 | Personal source file | `tests/test_member_1.py`, using your own member number. |
-| Guided cases per member | Eight, after completing all main test activities. |
+| Guided cases per member | Eight, followed by an attempt at one or two tests of your own in Section 12.4. |
 | After the lesson | Optional activities in Section 16. |
 
 ### Tools used
@@ -164,13 +164,14 @@ Agree who coordinates initial setup, your repository name, member numbers starti
 | 0–15 minutes | Create and clone the repository; share starting files. | 3–5 |
 | 15–25 minutes | Create personal branches, install packages and select a browser. | 6 |
 | 25–35 minutes | Explore the task list and run the first test. | 7 |
-| 35–45 minutes | Add the completion test. | 8 |
-| 45–55 minutes | Test three blank inputs. | 9 |
-| 55–70 minutes | Test correct and incorrect login details. | 10 |
-| 70–85 minutes | Record actions, add a check and replay. | 11 |
-| 85–95 minutes | Use a helper to add two tasks. | 12 |
-| 95–105 minutes | Generate a report and inspect screenshots. | 13 |
-| 105–120 minutes | Combine group source files and update local main. | 14 |
+| 35–40 minutes | Add the completion test. | 8 |
+| 40–50 minutes | Test three blank inputs. | 9 |
+| 50–65 minutes | Test correct and incorrect login details. | 10 |
+| 65–75 minutes | Record actions, add a check and replay. | 11 |
+| 75–85 minutes | Use a helper to add two tasks. | 12.1–12.3 |
+| 85–100 minutes | Attempt one or two tests of your own. | 12.4 |
+| 100–110 minutes | Generate a report and inspect screenshots. | 13 |
+| 110–120 minutes | Combine group source files and update local main. | 14 |
 | Total | 120 minutes | |
 
 The timing assumes software and accounts are ready and the network is working. If setup or troubleshooting takes longer, save your progress and continue unfinished main activities afterwards. Do not hide errors or remove checks to keep to the timing.
@@ -920,6 +921,8 @@ A helper is simply a Python function used to repeat useful steps.
 
 ### 12.1 Add the helper
 
+Put both the helper in this step and the test in Section 12.2 in your same personal file. Both `def` lines must start at the left edge, not inside another function.
+
 Append to your personal file, keeping existing code:
 
 ```python
@@ -970,6 +973,156 @@ git diff --staged
 git commit -m "Add helper and two task creation test"
 git push
 ```
+
+
+### 12.4 Create one or two tests of your own
+
+Allow about 15 minutes for this activity. Start with one small test. If it works and you have time, try a second test.
+
+Each member adds their own test to their personal file, such as `tests/test_member_1.py`. You may discuss ideas with your group, but create and run your own code.
+
+You do not need a separate document. Use short comments in your code if they help you remember your idea.
+
+#### Step 1: Choose one small behaviour
+
+Choose an idea below or another simple behaviour on one of the two demonstration websites.
+
+| Idea | What to try manually first | What the test could check |
+| --- | --- | --- |
+| Active tasks | Add two tasks, complete one and select Active. | Only the unfinished task appears. |
+| All tasks | Add two tasks, complete one, select Completed and then All. | Both task names appear again under All. |
+| Repeated task names | Add the same fictional task name twice. | Two task rows appear with the expected labels. |
+| Different valid task names | Add a short name or a name containing numbers. | The task appears with the expected text and the input is cleared. |
+
+For your first attempt, choose Active tasks or a different valid task name. You can reuse most of the code already in your file.
+
+> [!TIP]
+> Changing only a test's name is not a new check. Choose a different input or behaviour, and make the assertion match the result you want to check.
+
+#### Step 2: Try it in the browser
+
+1. Open the appropriate demonstration website manually.
+2. Perform the steps once.
+3. Notice exactly what appears after each action.
+4. Decide what the automated test should check.
+
+Keep the scenario small. Do not try to check the whole website in one test.
+
+#### Step 3: Put the idea into three parts
+
+For example, an Active-filter test can be planned like this:
+
+```text
+Starting point:
+An empty task list.
+
+Actions:
+Add “Read a chapter”.
+Add “Write a summary”.
+Complete “Read a chapter”.
+Select Active.
+
+Expected result:
+Only “Write a summary” is displayed.
+```
+
+This is an example plan, not code to paste into Python. You can use the same three-part pattern for your own idea.
+
+#### Step 4: Start a new test function
+
+Append a new function to your personal test file. Give it a unique name beginning with `test_`.
+
+For example, this starting code opens the task list:
+
+```python
+def test_active_filter_shows_unfinished_task(page: Page):
+    page.goto(URL)
+
+    # Add your setup and browser actions here.
+
+    # Add assertions that check your expected result here.
+```
+
+> [!IMPORTANT]
+> This is only a starting point, not a complete test. It may run without checking the behaviour because it has no assertions yet. Add your actions and at least one meaningful assertion before treating it as finished.
+
+Keep the `def` line at the left edge. Indent its instructions by four spaces. Do not put the new function inside an existing test.
+
+Keep the existing imports, `URL`, helper and earlier tests.
+
+#### Step 5: Reuse the parts you already know
+
+| What you need | Earlier example to reuse |
+| --- | --- |
+| Open the task list | `page.goto(URL)` |
+| Add a task | `add_task(page, "A fictional task")` |
+| Find the task rows | `page.locator(".todo-list li")` |
+| Complete the first task | The checkbox actions from Section 8. |
+| Select a filter | The Completed-link action from Section 8; change the link name to `Active` or `All`. |
+| Check the number of rows | `expect(task_items).to_have_count(...)` |
+| Check task names | `expect(task_items.locator("label")).to_have_text([...])` |
+
+Replace `...` with the value your test expects. Do not paste these incomplete reference expressions as finished checks.
+
+If you use `add_task(...)`, make sure the complete `def add_task(...)` helper is in this same file, outside every test function. It is your helper, not a built-in Playwright command.
+
+Each test starts with a fresh session. Add all tasks needed for your test inside that test. Do not rely on tasks from an earlier test or your usual browser.
+
+You can use Codegen to help find an unfamiliar action. Read the generated code and add useful assertions before copying it into your personal file.
+
+#### Step 6: Run only your new test
+
+Save with Ctrl+S. For the example function name above, run:
+
+```bat
+python -m pytest tests/test_member_1.py::test_active_filter_shows_unfinished_task --browser-channel %TEST_BROWSER% --headed --slowmo 300
+```
+
+Use your own member number and the exact function name you created.
+
+Watch the browser, then read the terminal result. If the test passes, check the source still contains assertions for the intended result. A passing test with no useful checks is not the goal.
+
+If it fails:
+
+1. Read the failing line and error.
+2. Check the intended page loaded.
+3. Compare your actions with the manual attempt.
+4. Compare the expected task count and text with the page.
+5. Change one thing at a time and rerun only this test.
+
+Use Section 17 for common errors. Do not remove a meaningful assertion simply to obtain a pass.
+
+#### Step 7: Try a second test if time allows
+
+Choose another small behaviour or input. Use a different `test_` name and include its own setup and assertions.
+
+For example, after checking Active, you could separately check that returning to All shows both task names. Do not make the second test depend on the first test having run.
+
+If time runs out, save your attempt and continue after the lesson. Before merging your branch, finish or repair incomplete tests so they do not silently pass without checking anything. If you set an unfinished draft aside, keep it in a clearly labelled local file under ignored `recordings/` until it is ready.
+
+#### Step 8: Run your complete personal file and share working changes
+
+```bat
+python -m pytest tests/test_member_1.py --browser-channel %TEST_BROWSER% --headed
+```
+
+With the eight guided cases unchanged:
+
+- One additional ordinary test function gives nine cases.
+- Two additional ordinary test functions give ten cases.
+- A parametrized addition can create more than one case.
+
+After your new tests run successfully, save the working source:
+
+```bat
+git add tests/test_member_1.py
+git diff --staged
+git commit -m "Add my own browser behaviour tests"
+git push
+```
+
+Use your own filename. Combine the changes with the group in Section 14.
+
 
 ***
 
@@ -1062,7 +1215,7 @@ Choose one member:
 python -m pytest --browser-channel %TEST_BROWSER% --html=reports/group-results.html --self-contained-html
 ```
 
-With only guided cases: eight executions per member file, giving 24 for three members, 32 for four or 40 for five. Extra tests change the total.
+With only guided cases, there are eight executions per member file. Your own completed tests increase that number. For example, if each member has nine cases, there are 27 executions for three members, 36 for four or 45 for five. Check the actual collected count rather than assuming every member added the same number.
 
 Repeated guided cases do not mean additional unique functional coverage. Avoid repeated whole-group runs without a reason.
 
@@ -1177,7 +1330,7 @@ Look through navigation, text entry, Enter and the failed check. Restore:
 expect(task_labels).to_have_text(["Read testing notes"])
 ```
 
-Save and rerun your file. With only guided cases, success reports `8 passed`.
+Save and rerun your file. With only the eight guided cases, success reports `8 passed`. Your own additional tests increase the total.
 
 ```bat
 git diff
